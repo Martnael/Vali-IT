@@ -9,8 +9,6 @@ public class Lesson3 {
         // System.out.println(sort(new int[]{20, 37, 15, 21}));
         // System.out.println(reverseString("Mart on"));
         // System.out.println(isPrime(7));
-        // Lesson3Hard.randomGame();
-        System.out.println(Lesson3Hard.morseCode("sos"));
     }
 
     /**
