@@ -6,12 +6,41 @@ import java.util.List;
 
 public class CodeWars {
     public static void main(String[] args) {
-        System.out.println(buddy(1071625, 1103735));
+        // System.out.println(buddy(1071625, 1103735));
+        System.out.println(findUniq(new double[]{ 1, 1, 1, 2, 1, 1 }));
     }
 
+    /**
+     * !!!! FAILING TIMEOUT TEST MAKE IT MORE EFFICIENT !!!!!!!!!
+     * https://www.codewars.com/kata/585d7d5adb20cf33cb000235/train/java
+     * There is an array with some numbers. All numbers are equal except for one. Try to find it!
+     * @param arr
+     * @return
+     */
 
+    public static double findUniq(double arr[]) {
+        HashMap<Double, Integer> elementCount = new HashMap<Double, Integer>();
 
-
+        /// a loop to count how many of each elements is represented in the list elements and limit it with maxOccurrences
+        for (double element : arr) {
+            int count = 0;
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i] == element) {
+                    count++;
+                }
+            }
+            if (!elementCount.containsKey(element)) {
+                elementCount.put(element, count);
+            }
+        }
+        double answer = 0;
+        for (Double aDouble : elementCount.keySet()) {
+            if (elementCount.get(aDouble) == 1) {
+                answer = aDouble;
+            }
+        }
+        return answer;
+    }
 
 
 
