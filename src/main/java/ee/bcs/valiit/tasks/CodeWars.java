@@ -6,8 +6,13 @@ import java.util.List;
 
 public class CodeWars {
     public static void main(String[] args) {
-
+        System.out.println(buddy(1071625, 1103735));
     }
+
+
+
+
+
 
 
     /**
@@ -18,6 +23,8 @@ public class CodeWars {
      */
 
     public static String buddy(long start, long limit) {
+
+        // Calculate all possible sum of divisors between start and limits.
         long start2 = start;
         HashMap<Long, Long> values= new HashMap<>();
         while (start <= limit) {
@@ -26,31 +33,42 @@ public class CodeWars {
             start++;
         }
 
-        /// Proov
         // Start to compare what is the max pair where (key, value) are a pair of buddy if s(key) = value + 1 and s(value) = key + 1
-        for (long i = limit; i > start2; i--) {
+        for (long i = start2; i < limit; i++) {
             Long currentValue = values.get(i);
             Long comparableKey = currentValue - 1;
             Long comparableValue = countSum(comparableKey);
             if (comparableValue-1 == i) {
-                System.out.println(i);
+                if (i < comparableKey) {
+                    String answer = "(" + i + " " + comparableKey +")";
+                    return answer;
+                } else {
+                    continue;
+                }
             }
-
-
-
         }
         return "Nothing";
     }
 
+    /**
+     * calculate sum of divisors for one element
+     * @param number
+     * @return
+     */
+
     public static Long countSum (Long number) {
-        long sum = 0;
-        for (int i = 1; i < number; i++) {
+        long result = 0;
+        for (long i = 2; i <= Math.sqrt(number); i++) {
             if (number % i == 0) {
-                sum = sum + i;
+                if (i == (number / i))
+                    result += i;
+                else
+                    result += (i + number / i);
             }
         }
-        return sum;
+        return (result + 1);
     }
+
 
 
     /**
