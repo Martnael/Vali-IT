@@ -59,6 +59,7 @@ public class Lesson3Hard {
         }
     }
 
+
     /**
      * Translate to Morse
      *

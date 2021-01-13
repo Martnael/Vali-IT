@@ -304,6 +304,7 @@ public class Lesson2 {
             start++;
         }
 
+        /// Proov
         // Start to compare what is the max pair where (key, value) are a pair of buddy if s(key) = value + 1 and s(value) = key + 1
         for (long i = limit; i > start2; i--) {
             Long currentValue = values.get(i);
