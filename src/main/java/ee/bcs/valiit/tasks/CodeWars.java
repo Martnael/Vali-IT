@@ -32,17 +32,17 @@ public class CodeWars {
         sb.append(s);
 
         //////  find closest and make such string //////////
-        if (checkPerfectSqrt(length)) {
-            boxSize = (int) Math.sqrt(length);
+        if (checkPerfectSqrt(s.length())) {
+            boxSize = (int) Math.sqrt(s.length());
         } else {
-            while (!checkPerfectSqrt(length)) {
+            while (!checkPerfectSqrt(s.length())) {
                 length++;
                 sb.append(" ");
             }
             boxSize = length;
         }
 
-
+        String[] splitVersion = sb.toString().split("");
 
 
 
