@@ -1,14 +1,16 @@
 package ee.bcs.valiit.tasks;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class CodeWars {
     public static void main(String[] args) {
         // System.out.println(buddy(1071625, 1103735));
         // System.out.println(findUniq(new double[]{ 1, 1, 1, 2, 1, 1 }));
-        System.out.println(decode("Romani ite domumasasas"));
+        // System.out.println(decode("Romani ite domumasasas"));
+        // System.out.println(toBinary(11));
+        // System.out.println(solve(new int[]{15,7,12,10,11}));
+        PawnGame.redKnight(1,6);
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -42,21 +44,26 @@ public class CodeWars {
             boxSize = length;
         }
 
+        ///// Start decoding ///////
+        String[][] matrix = new String[boxSize][boxSize];
+        int howManyCircles = (boxSize + 1) /2;
         String[] splitVersion = sb.toString().split("");
-
-
-
-
-
-
 
         return sb.toString() + boxSize;
     }
+
 
     public static Boolean checkPerfectSqrt (int number) {
         double sq = Math.sqrt(number);
         return (sq - Math.floor(sq)) == 0;
     }
+
+
+
+
+
+
+
 
 //---------------------------------------------------------------------------------------------------------------------------------------
     /**
@@ -93,6 +100,93 @@ public class CodeWars {
 
 //---------------------------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * https://www.codewars.com/kata/5a090c4e697598d0b9000004
+     * @param arr
+     * @return
+     */
+    public static int[] solve (int[] arr){
+        int [] answer = new int[arr.length];
+        int [] sorted = sort(arr);
+
+        int pos = 0;
+        for (int i = 0 ; i < sorted.length ; i = i + 2) {
+            answer[i] = sorted[pos];
+            pos++;
+        }
+
+        int pos2 = arr.length-1;
+        for (int i = 1 ; i < sorted.length ; i = i + 2) {
+            answer[i] = sorted[pos2];
+            pos2--;
+        }
+
+        for (int i : answer) {
+            System.out.println(i);
+        }
+        return answer;
+    }
+
+    public static int[] sort(int[] a) {
+        int arrayLength = a.length;
+        for (int i = 0; i < arrayLength; i++) {
+            for (int j = i + 1; j < arrayLength; j++) {
+                if (a[i] < a[j]) {
+                    int x = a[i];
+                    a[i] = a[j];
+                    a[j] = x;
+                }
+            }
+        }
+        return a;
+    }
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+
+    /**
+     * https://www.codewars.com/kata/59fca81a5712f9fa4700159a
+     * @param n
+     * @return
+     */
+
+    public static int toBinary(int n) {
+        List<String> order = new ArrayList<>();
+        while (n > 0) {
+            int j = n % 2;
+            order.add(String.valueOf(j));
+            n = n / 2;
+        }
+        System.out.println(order.toString());
+        StringBuilder sb = new StringBuilder();
+        for (int i = order.size()-1; i >= 0; i--) {
+            sb.append(order.get(i));
+        }
+        int answer = Integer.parseInt(sb.toString());
+        return answer;
+    }
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * https://www.codewars.com/kata/557cd6882bfa3c8a9f0000c1
+     * Failing if person is older than 9 years. :)
+     * @param herOld
+     * @return
+     */
+
+    public static int howOld(final String herOld) {
+    char first = herOld.charAt(0);
+    return Character.getNumericValue(first);
+    }
+
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------------
     /**
      *https://www.codewars.com/kata/59ccf051dcc4050f7800008f
      * @param start
