@@ -12,10 +12,10 @@ class PawnDistance {
 public class PawnGame {
     public static PawnDistance redKnight(int knight, long pawn) {
         String answer = "";
-        int posKnight = 0;
-        int posPawn = (int) pawn;
-        int moves = 0;
-        for (int i = 0; i < 1000001; i++) {
+        long posKnight = 0;
+        long posPawn = pawn;
+        long moves = 0;
+        for (long i = 0; i < 1000000; i++) {
             if (posKnight == posPawn) {
                 break;
             } else {

@@ -10,7 +10,7 @@ public class CodeWars {
         // System.out.println(decode("Romani ite domumasasas"));
         // System.out.println(toBinary(11));
         // System.out.println(solve(new int[]{15,7,12,10,11}));
-        PawnGame.redKnight(0,7);
+        PawnGame.redKnight(1,6);
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
