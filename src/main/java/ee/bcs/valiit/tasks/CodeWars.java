@@ -7,9 +7,58 @@ import java.util.List;
 public class CodeWars {
     public static void main(String[] args) {
         // System.out.println(buddy(1071625, 1103735));
-        System.out.println(findUniq(new double[]{ 1, 1, 1, 2, 1, 1 }));
+        // System.out.println(findUniq(new double[]{ 1, 1, 1, 2, 1, 1 }));
+        System.out.println(decode("Romani ite domumasasas"));
     }
 
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+
+    /**
+     * https://www.codewars.com/kata/5a24a35a837545ab04001614
+     * In this kata, your task is to implement what I call Interlaced Spiral Cipher (ISC).
+     * @Param String
+     */
+
+    public static String encode(String s) {
+        // Your code here!
+        return "";
+    }
+
+    public static String decode(String s) {
+        int length = s.length();
+        StringBuilder sb = new StringBuilder();
+        int boxSize = 0;
+        sb.append(s);
+
+        //////  find closest and make such string //////////
+        if (checkPerfectSqrt(length)) {
+            boxSize = (int) Math.sqrt(length);
+        } else {
+            while (!checkPerfectSqrt(length)) {
+                length++;
+                sb.append(" ");
+            }
+            boxSize = length;
+        }
+
+
+
+
+
+
+
+
+
+        return sb.toString() + boxSize;
+    }
+
+    public static Boolean checkPerfectSqrt (int number) {
+        double sq = Math.sqrt(number);
+        return (sq - Math.floor(sq)) == 0;
+    }
+
+//---------------------------------------------------------------------------------------------------------------------------------------
     /**
      * !!!! FAILING TIMEOUT TEST MAKE IT MORE EFFICIENT !!!!!!!!!
      * https://www.codewars.com/kata/585d7d5adb20cf33cb000235/train/java
@@ -42,7 +91,7 @@ public class CodeWars {
         return answer;
     }
 
-
+//---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      *https://www.codewars.com/kata/59ccf051dcc4050f7800008f
@@ -78,6 +127,8 @@ public class CodeWars {
         }
         return "Nothing";
     }
+//---------------------------------------------------------------------------------------------------------------------------------------
+
 
     /**
      * calculate sum of divisors for one element
@@ -98,7 +149,7 @@ public class CodeWars {
         return (result + 1);
     }
 
-
+//---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Given a Divisor and a Bound , Find the largest integer N , Such That
@@ -114,6 +165,8 @@ public class CodeWars {
         }
         return bound;
     }
+
+//---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Given a list lst and a number N, create a new list that contains each number of lst at most N times without reordering.
@@ -155,7 +208,7 @@ public class CodeWars {
         return answer;
     }
 
-
+//---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Complete the method/function so that it converts dash/underscore delimited words into camel casing.
@@ -190,6 +243,7 @@ public class CodeWars {
         return sb.toString();
     }
 
+//---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Capitalize each word first letter
@@ -219,6 +273,7 @@ public class CodeWars {
         }
     }
 
+//---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * You are given an array with positive numbers and a non-negative number N.
@@ -240,5 +295,7 @@ public class CodeWars {
             return answer;
         }
     }
+
+//---------------------------------------------------------------------------------------------------------------------------------------
 
 }
