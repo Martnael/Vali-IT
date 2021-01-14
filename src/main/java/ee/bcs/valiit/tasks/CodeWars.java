@@ -10,7 +10,8 @@ public class CodeWars {
         // System.out.println(decode("Romani ite domumasasas"));
         // System.out.println(toBinary(11));
         // System.out.println(solve(new int[]{15,7,12,10,11}));
-        PawnGame.redKnight(1,6);
+        // PawnGame.redKnight(1,6);
+        System.out.println(sumOfDifferences(new int[]{-17, 17}));
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -391,5 +392,38 @@ public class CodeWars {
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * https://www.codewars.com/kata/5b73fe9fb3d9776fbf00009e
+     * Your task is to sum the differences between consecutive pairs in the array in descending order.
+     * @param arr
+     * @return
+     */
+    public static int sumOfDifferences(int[] arr) {
+        if (arr.length <= 1) {
+            return 0;
+        }
+        int[] sorted = sortMaxToMin(arr);
+        int sum = 0;
+        for (int i = 0; i < arr.length-1; i++) {
+            sum = sum + (arr[i] -arr[i+1]);
+        }
+
+        return sum;
+    }
+
+    public static int[] sortMaxToMin(int[] a) {
+        int arrayLength = a.length;
+        for (int i = 0; i < arrayLength; i++) {
+            for (int j = i + 1; j < arrayLength; j++) {
+                if (a[i] < a[j]) {
+                    int x = a[i];
+                    a[i] = a[j];
+                    a[j] = x;
+                }
+            }
+        }
+        return a;
+    }
 
 }
