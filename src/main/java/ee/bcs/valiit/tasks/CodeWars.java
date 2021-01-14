@@ -9,7 +9,8 @@ public class CodeWars {
         // System.out.println(findUniq(new double[]{ 1, 1, 1, 2, 1, 1 }));
         // System.out.println(decode("Romani ite domumasasas"));
         // System.out.println(toBinary(11));
-        System.out.println(solve(new int[]{15,7,12,10,11}));
+        // System.out.println(solve(new int[]{15,7,12,10,11}));
+        PawnGame.redKnight(0,7);
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -43,17 +44,10 @@ public class CodeWars {
             boxSize = length;
         }
 
+        ///// Start decoding ///////
         String[][] matrix = new String[boxSize][boxSize];
         int howManyCircles = (boxSize + 1) /2;
         String[] splitVersion = sb.toString().split("");
-
-
-
-
-
-
-
-
 
         return sb.toString() + boxSize;
     }
