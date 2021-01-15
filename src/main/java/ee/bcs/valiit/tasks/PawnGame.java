@@ -11,17 +11,16 @@ class PawnDistance {
 
 public class PawnGame {
     public static PawnDistance redKnight(int knight, long pawn) {
+        String answer = "";
         long posPawn = pawn*2;
 
-        if (knight == 0 && moves % 2 == 0 ) {
-            answer = "White";
-        } else if (knight == 0 && moves % 2 != 0 ){
-            answer = "Black";
-        } else if (knight == 1 && moves % 2 != 0) {
-            answer = "White";
-        } else {
-            answer = "Black";
-        }
+    if ((pawn % 2 == 0 && knight == 0) || (pawn % 2 != 0 && knight == 1 ) ) {
+        answer = "White";
+    } else {
+        answer = "Black";
+    }
+
+
     return new PawnDistance(answer, posPawn);
     }
 }
