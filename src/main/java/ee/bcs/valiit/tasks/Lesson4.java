@@ -37,7 +37,7 @@ public class Lesson4 {
                     withdrawMoney(scanner, accountBalanceMap);
                     break;
                 case "transfer":
-                    System.out.println("transfer");
+                    transferMoney(scanner);
                     break;
                 case "exit":
                     System.out.println("exit");
@@ -157,7 +157,7 @@ public class Lesson4 {
                 String toAdd = scanner.nextLine();
                 boolean positive = isPositive(toAdd);
                 while (!positive) {
-                    System.out.println("Please enter correct amount: ");
+                    System.out.println("Please enter correct amount or type \"back\" ");
                     toAdd = scanner.nextLine();
                     positive = isPositive(toAdd);
                 }
@@ -188,7 +188,6 @@ public class Lesson4 {
             String line = scanner.nextLine();
             if (existBankAccount(line)) {
                 System.out.println("Please enter amount to withdraw: ");
-                BigDecimal amountToWithdraw = BigDecimal.ZERO;
                 String toSubtract = scanner.nextLine();
                 BigDecimal balance = accountBalance(line);
                 Boolean status = isPositive(toSubtract);
@@ -225,9 +224,25 @@ public class Lesson4 {
             if (existBankAccount(transferFromAccount)) {
                 System.out.println("Transfer to account:");
                 String transferToAccount = scanner.nextLine();
-
-
-                session = false;
+                if (existBankAccount(transferToAccount)) {
+                    System.out.println("Enter amount to transfer");
+                    String sumToTransfer = scanner.nextLine();
+                    if (isPositive(sumToTransfer)) {
+                        BigDecimal transfer = new BigDecimal(sumToTransfer);
+                        if( accountBalance(transferFromAccount).compareTo(transfer) > 0) {
+                            BigDecimal newBalance = accountBalanceMap.get(transferFromAccount).subtract(transfer);
+                            accountBalanceMap.put(transferFromAccount, newBalance);
+                            BigDecimal newBalance2 = accountBalanceMap.get(transferToAccount).add(transfer);
+                            accountBalanceMap.put(transferToAccount, newBalance2);
+                            session = false;
+                        } else {
+                            System.out.println("Ha HA you dont have enough money");
+                        }
+                    } else {
+                        System.out.println("Amount is Negative");
+                    }
+                    System.out.println("Incorrect account number");
+                }
             } else if (transferFromAccount.equals("back")) {
                 session = false;
             } else {
@@ -235,8 +250,5 @@ public class Lesson4 {
                 System.out.println("Please try again or type \"back\" ");
             }
         }
-
     }
-
-
 }
