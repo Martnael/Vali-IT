@@ -406,7 +406,7 @@ public class CodeWars {
         int[] sorted = sortMaxToMin(arr);
         int sum = 0;
         for (int i = 0; i < arr.length-1; i++) {
-            sum = sum + (arr[i] -arr[i+1]);
+            sum = sum + (sorted[i] -sorted[i+1]);
         }
 
         return sum;

@@ -11,19 +11,7 @@ class PawnDistance {
 
 public class PawnGame {
     public static PawnDistance redKnight(int knight, long pawn) {
-        String answer = "";
-        long posKnight = 0;
-        long posPawn = pawn;
-        long moves = 0;
-        for (long i = 0; i < 1000000; i++) {
-            if (posKnight == posPawn) {
-                break;
-            } else {
-                posKnight = posKnight + 2;
-                posPawn++;
-                moves++;
-            }
-        }
+        long posPawn = pawn*2;
 
         if (knight == 0 && moves % 2 == 0 ) {
             answer = "White";
