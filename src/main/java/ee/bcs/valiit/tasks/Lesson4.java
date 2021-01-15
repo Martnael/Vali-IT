@@ -47,12 +47,6 @@ public class Lesson4 {
                     System.out.println("Unknown command");
             }
 
-            // TODO 5
-            // Add command: "transfer ${fromAccount} ${toAccount} ${amount}
-            // This has to remove specified amount from fromAccount and add it to toAccount
-            // Your application needs to check that toAccount is positive
-            // And from account has enough money to do that transaction
-
         }
     }
 

@@ -1,6 +1,7 @@
 package ee.bcs.valiit.tasks;
 
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.util.*;
 
 public class CodeWars {
@@ -11,7 +12,8 @@ public class CodeWars {
         // System.out.println(toBinary(11));
         // System.out.println(solve(new int[]{15,7,12,10,11}));
         // PawnGame.redKnight(1,6);
-        System.out.println(sumOfDifferences(new int[]{-17, 17}));
+        // System.out.println(sumOfDifferences(new int[]{-17, 17}));
+        Get(500000);
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -59,8 +61,37 @@ public class CodeWars {
         return (sq - Math.floor(sq)) == 0;
     }
 
+//---------------------------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * https://www.codewars.com/kata/5819f1c3c6ab1b2b28000624
+     * The Padovan sequence is the sequence of integers P(n) defined by the initial values
+     *
+     * P(0)=P(1)=P(2)=1
+     * @param power
+     * @return
+     */
 
+    public static BigInteger Get (long power) {
+        BigInteger[] series = new BigInteger[(int) power];
+        series[0]=BigInteger.ONE;
+        series[1]=BigInteger.ONE;
+        series[2]=BigInteger.ONE;
+        series[3]=BigInteger.TWO;
+        series[4]=BigInteger.TWO;
+
+        for (int i = 5; i < power; i++) {
+            series[i] = series[i-2].add(series[i-3]);
+        }
+
+        BigInteger sum = BigInteger.ZERO;
+        for (int i = 0; i < power; i++) {
+            sum = sum.add(series[i]);
+        }
+
+        System.out.println(sum.toString());
+        return BigInteger.ZERO;
+    }
 
 
 
