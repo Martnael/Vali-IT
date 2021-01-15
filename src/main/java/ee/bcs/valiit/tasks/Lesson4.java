@@ -31,10 +31,10 @@ public class Lesson4 {
                         getBalance(scanner, accountBalanceMap);
                     break;
                 case "depositMoney":
-                    System.out.println("depositMoney");
+                    depositMoney(scanner, accountBalanceMap);
                     break;
                 case "withdrawMoney":
-                    System.out.println("withdrawMoney");
+                    withdrawMoney(scanner, accountBalanceMap);
                     break;
                 case "transfer":
                     System.out.println("transfer");
@@ -47,21 +47,6 @@ public class Lesson4 {
                     System.out.println("Unknown command");
             }
 
-            // TODO 1
-            // Add command: "createAccount ${accountNr}"
-            // this has to store accountNr with 0 balance
-            // TODO 2
-            // Add command: "getBalance ${accountNr}"
-            // this has to display account balance of specific acount
-            // TODO 3
-            // Add command: "depositMoney ${accountNr} ${amount}
-            // this has to add specified amount of money to account
-            // You have to check that amount is positive number
-            // TODO 4
-            // Add command: "withdrawMoney ${accountNr} ${amount}
-            // This has to remove specified amount of money from account
-            // You have to check that amount is positive number
-            // You may not allow this transaction if account balance would become negative
             // TODO 5
             // Add command: "transfer ${fromAccount} ${toAccount} ${amount}
             // This has to remove specified amount from fromAccount and add it to toAccount
@@ -72,12 +57,49 @@ public class Lesson4 {
     }
 
     /**
+     * check account balance
+     */
+    public static BigDecimal accountBalance(String accountNumber) {
+        return accountBalanceMap.get(accountNumber);
+    }
+
+    /**
+     * Validate is there a existing bankAccount or not
+     */
+    public static boolean existBankAccount (String bankAccount) {
+        boolean status = accountBalanceMap.containsKey(bankAccount);
+        return status;
+    }
+
+    /**
+     * Check if amount is positive or not
+     */
+
+    public static boolean isPositive (String value) {
+        BigDecimal number = new BigDecimal(value);
+        boolean answer = number.compareTo(BigDecimal.ZERO) > 0;
+        return answer;
+    }
+
+    /** TODO LOPETA ARA
+     * Validate bank account format EE 90 10 10 1234 5678 9012
+     * two letters + 18 numbers
+     */
+
+    public static boolean validateBankAccountFormat (String bankAccount) {
+        String[] splitAccount = bankAccount.split("");
+
+
+        return true;
+    }
+
+    /**
      * create an account and compare maybe there is already that account
      * @param scanner
      * @param accountBalanceMap
      * @return
      */
-    public static HashMap<String, BigDecimal> createAccount (Scanner scanner, HashMap<String, BigDecimal> accountBalanceMap) {
+    public static void createAccount (Scanner scanner, HashMap<String, BigDecimal> accountBalanceMap) {
         System.out.println("Please insert account number");
         String line = scanner.nextLine();
         BigDecimal balance = new BigDecimal(0);
@@ -92,31 +114,10 @@ public class Lesson4 {
                 isAccountAlready = false;
             }
         }
-        return accountBalanceMap;
     }
 
     /**
-     * Validate bank account format EE 90 10 10 1234 5678 9012
-     * two letters + 18 numbers
-     */
-
-    public static boolean validateBankAccountFormat (String bankAccount) {
-            String[] splitAccount = bankAccount.split("");
-
-
-        return true;
-    }
-
-    /**
-     * Validate is there a existing bankAccount or not
-     */
-    public static boolean existBankAccount (String bankAccount, HashMap<String, BigDecimal> accountBalanceMap ) {
-        boolean status = accountBalanceMap.containsKey(bankAccount);
-        return status;
-    }
-
-    /**
-     * check account
+     * check account balance
      * @param scanner
      */
 
@@ -126,7 +127,7 @@ public class Lesson4 {
         while (session) {
             String line = scanner.nextLine();
             if (accountBalanceMap.containsKey(line)) {
-                String balance = accountBalanceMap.get(line).toString();
+                String balance = accountBalance(line).toString();
                 System.out.println("Current balance for account: " + balance + " EUR");
                 session = false;
             } else if (line.equals("back")) {
@@ -139,17 +140,103 @@ public class Lesson4 {
         }
     }
 
-    public static HashMap<String, BigDecimal> depositMoney (Scanner scanner, HashMap<String, BigDecimal> accountBalanceMap) {
+    /**
+     * get current balance for account.
+     * @param scanner
+     * @param accountBalanceMap
+     * @return
+     */
+
+    public static void depositMoney(Scanner scanner, HashMap<String, BigDecimal> accountBalanceMap) {
         boolean session = true;
         while (session) {
             System.out.println("Please insert account number:");
+            String line = scanner.nextLine();
+            if (existBankAccount(line)) {
+                System.out.println("Please enter amount: ");
+                String toAdd = scanner.nextLine();
+                boolean positive = isPositive(toAdd);
+                while (!positive) {
+                    System.out.println("Please enter correct amount: ");
+                    toAdd = scanner.nextLine();
+                    positive = isPositive(toAdd);
+                }
+                BigDecimal add = new BigDecimal(toAdd);
+                BigDecimal newBalance = accountBalanceMap.get(line).add(add);
+                accountBalanceMap.put(line, newBalance);
+                System.out.println("Balance: " + accountBalanceMap.get(line).toString());
+                session = false;
+            } else if (line.equals("back")) {
+                session = false;
+            } else {
+                System.out.println("Incorrect account number");
+                System.out.println("Please try again or type \"back\" ");
+            }
         }
-        return null;
+    }
+
+    /**
+     * subtract from account
+     * @param scanner
+     * @param accountBalanceMap
+     */
+
+    public static void withdrawMoney (Scanner scanner, HashMap<String, BigDecimal> accountBalanceMap) {
+        boolean session = true;
+        while (session) {
+            System.out.println("Please insert account number:");
+            String line = scanner.nextLine();
+            if (existBankAccount(line)) {
+                System.out.println("Please enter amount to withdraw: ");
+                BigDecimal amountToWithdraw = BigDecimal.ZERO;
+                String toSubtract = scanner.nextLine();
+                BigDecimal balance = accountBalance(line);
+                Boolean status = isPositive(toSubtract);
+                while (!status) {
+                    System.out.println("Please enter positive number to withdraw:");
+                    toSubtract = scanner.nextLine();
+                    status = isPositive(toSubtract);
+                }
+                BigDecimal subtract = new BigDecimal(toSubtract);
+                if (balance.compareTo(subtract) > 0) {
+                    BigDecimal newBalance = accountBalanceMap.get(line).subtract(subtract);
+                    accountBalanceMap.put(line, newBalance);
+                    System.out.println("Balance: " + accountBalance(line).toString());
+                    session = false;
+                } else {
+                    System.out.println("current balance is only " + balance.toString());
+                }
+            } else if (line.equals("back")) {
+                session = false;
+            } else {
+                System.out.println("Incorrect account number");
+                System.out.println("Please try again or type \"back\" ");
+            }
+        }
     }
 
 
 
+    public static void transferMoney (Scanner scanner){
+        boolean session = true;
+        while (session) {
+            System.out.println("Transfer from account:");
+            String transferFromAccount = scanner.nextLine();
+            if (existBankAccount(transferFromAccount)) {
+                System.out.println("Transfer to account:");
+                String transferToAccount = scanner.nextLine();
 
+
+                session = false;
+            } else if (transferFromAccount.equals("back")) {
+                session = false;
+            } else {
+                System.out.println("Incorrect account number");
+                System.out.println("Please try again or type \"back\" ");
+            }
+        }
+
+    }
 
 
 }
