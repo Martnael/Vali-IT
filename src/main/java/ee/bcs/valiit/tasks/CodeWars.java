@@ -13,7 +13,7 @@ public class CodeWars {
         // System.out.println(solve(new int[]{15,7,12,10,11}));
         // PawnGame.redKnight(1,6);
         // System.out.println(sumOfDifferences(new int[]{-17, 17}));
-        Get(500000);
+        // Get(200000);
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -108,8 +108,20 @@ public class CodeWars {
 
     public static double findUniq(double arr[]) {
         HashMap<Double, Integer> elementCount = new HashMap<Double, Integer>();
+        Arrays.sort(arr);
+
+        double temp = 0;
+
+        for (int i = 0 ; i < 0; i++) {
+            if (arr[i] == arr[i+1]) {
+
+            }
+        }
+
+
 
         /// a loop to count how many of each elements is represented in the list elements and limit it with maxOccurrences
+        Arrays.sort(arr);
         for (double element : arr) {
             int count = 0;
             for (int i = 0; i < arr.length; i++) {
