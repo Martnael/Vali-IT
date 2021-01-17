@@ -14,14 +14,37 @@ public class CodeWars {
         // PawnGame.redKnight(1,6);
         // System.out.println(sumOfDifferences(new int[]{-17, 17}));
         // Get(200000);
+        System.out.println(bouncingBall(4, 0.25, 1));
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * https://www.codewars.com/kata/5544c7a5cb454edb3c000047
+     * Bouncing Balls
+     *
+     * @param h      - height
+     * @param bounce
+     * @param window
+     * @return
+     */
+    public static int bouncingBall(double h, double bounce, double window) {
+        if (h <= 0 || bounce >= 1 || bounce <= 0 || window > h) {
+            return -1;
+        }
+        double bounceHight = h * bounce;
+        int count = 1;
+        while (bounceHight > window) {
+            count += 2;
+            bounceHight = bounceHight * bounce;
+        }
+        return count;
+    }
 
     /**
      * https://www.codewars.com/kata/5a24a35a837545ab04001614
      * In this kata, your task is to implement what I call Interlaced Spiral Cipher (ISC).
+     *
      * @Param String
      */
 
@@ -49,14 +72,14 @@ public class CodeWars {
 
         ///// Start decoding ///////
         String[][] matrix = new String[boxSize][boxSize];
-        int howManyCircles = (boxSize + 1) /2;
+        int howManyCircles = (boxSize + 1) / 2;
         String[] splitVersion = sb.toString().split("");
 
         return sb.toString() + boxSize;
     }
 
 
-    public static Boolean checkPerfectSqrt (int number) {
+    public static Boolean checkPerfectSqrt(int number) {
         double sq = Math.sqrt(number);
         return (sq - Math.floor(sq)) == 0;
     }
@@ -66,22 +89,23 @@ public class CodeWars {
     /**
      * https://www.codewars.com/kata/5819f1c3c6ab1b2b28000624
      * The Padovan sequence is the sequence of integers P(n) defined by the initial values
-     *
+     * <p>
      * P(0)=P(1)=P(2)=1
+     *
      * @param power
      * @return
      */
 
-    public static BigInteger Get (long power) {
+    public static BigInteger Get(long power) {
         BigInteger[] series = new BigInteger[(int) power];
-        series[0]=BigInteger.ONE;
-        series[1]=BigInteger.ONE;
-        series[2]=BigInteger.ONE;
-        series[3]=BigInteger.TWO;
-        series[4]=BigInteger.TWO;
+        series[0] = BigInteger.ONE;
+        series[1] = BigInteger.ONE;
+        series[2] = BigInteger.ONE;
+        series[3] = BigInteger.TWO;
+        series[4] = BigInteger.TWO;
 
         for (int i = 5; i < power; i++) {
-            series[i] = series[i-2].add(series[i-3]);
+            series[i] = series[i - 2].add(series[i - 3]);
         }
 
         BigInteger sum = BigInteger.ZERO;
@@ -94,14 +118,13 @@ public class CodeWars {
     }
 
 
-
-
-
 //---------------------------------------------------------------------------------------------------------------------------------------
+
     /**
      * !!!! FAILING TIMEOUT TEST MAKE IT MORE EFFICIENT !!!!!!!!!
      * https://www.codewars.com/kata/585d7d5adb20cf33cb000235/train/java
      * There is an array with some numbers. All numbers are equal except for one. Try to find it!
+     *
      * @param arr
      * @return
      */
@@ -112,12 +135,11 @@ public class CodeWars {
 
         double temp = 0;
 
-        for (int i = 0 ; i < 0; i++) {
-            if (arr[i] == arr[i+1]) {
+        for (int i = 0; i < 0; i++) {
+            if (arr[i] == arr[i + 1]) {
 
             }
         }
-
 
 
         /// a loop to count how many of each elements is represented in the list elements and limit it with maxOccurrences
@@ -146,21 +168,22 @@ public class CodeWars {
 
     /**
      * https://www.codewars.com/kata/5a090c4e697598d0b9000004
+     *
      * @param arr
      * @return
      */
-    public static int[] solve (int[] arr){
-        int [] answer = new int[arr.length];
-        int [] sorted = sort(arr);
+    public static int[] solve(int[] arr) {
+        int[] answer = new int[arr.length];
+        int[] sorted = sort(arr);
 
         int pos = 0;
-        for (int i = 0 ; i < sorted.length ; i = i + 2) {
+        for (int i = 0; i < sorted.length; i = i + 2) {
             answer[i] = sorted[pos];
             pos++;
         }
 
-        int pos2 = arr.length-1;
-        for (int i = 1 ; i < sorted.length ; i = i + 2) {
+        int pos2 = arr.length - 1;
+        for (int i = 1; i < sorted.length; i = i + 2) {
             answer[i] = sorted[pos2];
             pos2--;
         }
@@ -191,6 +214,7 @@ public class CodeWars {
 
     /**
      * https://www.codewars.com/kata/59fca81a5712f9fa4700159a
+     *
      * @param n
      * @return
      */
@@ -204,7 +228,7 @@ public class CodeWars {
         }
         System.out.println(order.toString());
         StringBuilder sb = new StringBuilder();
-        for (int i = order.size()-1; i >= 0; i--) {
+        for (int i = order.size() - 1; i >= 0; i--) {
             sb.append(order.get(i));
         }
         int answer = Integer.parseInt(sb.toString());
@@ -212,27 +236,27 @@ public class CodeWars {
     }
 
 
-
 //---------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * https://www.codewars.com/kata/557cd6882bfa3c8a9f0000c1
      * Failing if person is older than 9 years. :)
+     *
      * @param herOld
      * @return
      */
 
     public static int howOld(final String herOld) {
-    char first = herOld.charAt(0);
-    return Character.getNumericValue(first);
+        char first = herOld.charAt(0);
+        return Character.getNumericValue(first);
     }
 
 
-
-
 // ---------------------------------------------------------------------------------------------------------------------------------------
+
     /**
-     *https://www.codewars.com/kata/59ccf051dcc4050f7800008f
+     * https://www.codewars.com/kata/59ccf051dcc4050f7800008f
+     *
      * @param start
      * @param limit
      * @return
@@ -242,7 +266,7 @@ public class CodeWars {
 
         // Calculate all possible sum of divisors between start and limits.
         long start2 = start;
-        HashMap<Long, Long> values= new HashMap<>();
+        HashMap<Long, Long> values = new HashMap<>();
         while (start <= limit) {
             long sum = countSum(start);
             values.put(start, sum);
@@ -254,9 +278,9 @@ public class CodeWars {
             Long currentValue = values.get(i);
             Long comparableKey = currentValue - 1;
             Long comparableValue = countSum(comparableKey);
-            if (comparableValue-1 == i) {
+            if (comparableValue - 1 == i) {
                 if (i < comparableKey) {
-                    String answer = "(" + i + " " + comparableKey +")";
+                    String answer = "(" + i + " " + comparableKey + ")";
                     return answer;
                 } else {
                     continue;
@@ -270,11 +294,12 @@ public class CodeWars {
 
     /**
      * calculate sum of divisors for one element
+     *
      * @param number
      * @return
      */
 
-    public static Long countSum (Long number) {
+    public static Long countSum(Long number) {
         long result = 0;
         for (long i = 2; i <= Math.sqrt(number); i++) {
             if (number % i == 0) {
@@ -293,6 +318,7 @@ public class CodeWars {
      * Given a Divisor and a Bound , Find the largest integer N , Such That
      * Explanation:
      * (50) is divisible by (10) , (50) is less than or equal to bound (50) , and (50) is > 0 .*
+     *
      * @param divisor
      * @param bound
      * @return
@@ -342,7 +368,7 @@ public class CodeWars {
             }
         }
         // converting to correct return type Integer to int. ????????
-        int [] answer = correctLst.stream().mapToInt(Integer::intValue).toArray();
+        int[] answer = correctLst.stream().mapToInt(Integer::intValue).toArray();
         return answer;
     }
 
@@ -439,6 +465,7 @@ public class CodeWars {
     /**
      * https://www.codewars.com/kata/5b73fe9fb3d9776fbf00009e
      * Your task is to sum the differences between consecutive pairs in the array in descending order.
+     *
      * @param arr
      * @return
      */
@@ -448,8 +475,8 @@ public class CodeWars {
         }
         int[] sorted = sortMaxToMin(arr);
         int sum = 0;
-        for (int i = 0; i < arr.length-1; i++) {
-            sum = sum + (sorted[i] -sorted[i+1]);
+        for (int i = 0; i < arr.length - 1; i++) {
+            sum = sum + (sorted[i] - sorted[i + 1]);
         }
 
         return sum;

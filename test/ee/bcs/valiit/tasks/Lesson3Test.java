@@ -33,6 +33,10 @@ class Lesson3Test {
 
     @Test
     void factorial() {
+        int test = 10;
+        int actualFactorial = Lesson3.factorial(10);
+        int expected = 3628800;
+        assertEquals(expected, actualFactorial);
 
     }
 
