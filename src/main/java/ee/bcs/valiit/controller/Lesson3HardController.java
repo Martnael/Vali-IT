@@ -1,5 +1,4 @@
 package ee.bcs.valiit.controller;
-import ee.bcs.valiit.tasks.Lesson3;
 import ee.bcs.valiit.tasks.Lesson3Hard;
 import org.springframework.web.bind.annotation.*;
 
