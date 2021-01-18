@@ -13,8 +13,8 @@ public class CodeWars {
         // System.out.println(solve(new int[]{15,7,12,10,11}));
         // PawnGame.redKnight(1,6);
         // System.out.println(sumOfDifferences(new int[]{-17, 17}));
-        // Get(200000);
-        System.out.println(bouncingBall(4, 0.25, 1));
+        Get(100000);
+        // System.out.println(bouncingBall(4, 0.25, 1));
     }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
@@ -103,6 +103,8 @@ public class CodeWars {
         series[2] = BigInteger.ONE;
         series[3] = BigInteger.TWO;
         series[4] = BigInteger.TWO;
+
+
 
         for (int i = 5; i < power; i++) {
             series[i] = series[i - 2].add(series[i - 3]);
