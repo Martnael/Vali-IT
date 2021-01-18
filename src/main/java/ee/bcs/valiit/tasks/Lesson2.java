@@ -1,6 +1,5 @@
 package ee.bcs.valiit.tasks;
 
-import javassist.expr.NewArray;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
