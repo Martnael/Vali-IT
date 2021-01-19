@@ -32,4 +32,15 @@ public class Lesson4controller {
     public String depositMoney(@RequestParam("account") String account, @RequestParam("sum") String sum) {
         return Lesson4ContVersion.depositMoney(account, sum, accountBalanceMap);
     }
+
+    @GetMapping ("withdrawmoney")
+    public String withdrawMoney (@RequestParam("account") String account, @RequestParam("sum") String sum) {
+        return Lesson4ContVersion.withdrawMoney(account, sum, accountBalanceMap);
+    }
+
+    @GetMapping ("transfermoney")
+    public String transferMoney ( @RequestParam("accountto") String accountTo, @RequestParam("accountfrom") String accountFrom,@RequestParam("sum") String sum) {
+        return Lesson4ContVersion.transferMoney(accountFrom, accountTo, sum, accountBalanceMap);
+    }
+
 }
