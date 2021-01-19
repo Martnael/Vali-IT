@@ -1,9 +1,6 @@
 package ee.bcs.valiit.tasks;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class CodeWars2 {
     public static void main(String[] args) {
@@ -11,7 +8,8 @@ public class CodeWars2 {
         // snail(array);
         // int[] array2 = {20,1,-1,2,-2,3,3,5,5,1,2,4,20,4,-1,-2,5};
         // findIt(array2);
-        System.out.println(validatePin("0000"));
+        // System.out.println(validatePin("0000"));
+        System.out.println(high("snpb mx heq rznlxr m opy fvmbzyup hrvwdnnjxd cms f iuygbkqp fntamvx bmolibqnfoym yo cpt"));
     }
 
     /**
@@ -55,6 +53,7 @@ public class CodeWars2 {
             }
         }
 
+
         for (Integer element : elementCount.keySet()) {
             if (elementCount.get(element) % 2 != 0) {
                 answer = element;
@@ -97,4 +96,64 @@ public class CodeWars2 {
             return false;
         }
     }
+// ---------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * https://www.codewars.com/kata/57eb8fcdf670e99d9b000272/java
+     * Given a string of words, you need to find the highest scoring word.
+     */
+    public static String high(String s) {
+        HashMap<String, Integer> values = new HashMap<>();
+        HashMap<String, Integer> sums = new HashMap<>();
+        values.put("a", 1);
+        values.put("b", 2);
+        values.put("c", 3);
+        values.put("d", 4);
+        values.put("e", 5);
+        values.put("f", 6);
+        values.put("g", 7);
+        values.put("h", 8);
+        values.put("i", 9);
+        values.put("j", 10);
+        values.put("k", 11);
+        values.put("l", 12);
+        values.put("m", 13);
+        values.put("n", 14);
+        values.put("o", 15);
+        values.put("p", 16);
+        values.put("q", 17);
+        values.put("r", 18);
+        values.put("s", 19);
+        values.put("t", 20);
+        values.put("u", 21);
+        values.put("v", 22);
+        values.put("w", 23);
+        values.put("x", 24);
+        values.put("y", 25);
+        values.put("z", 26);
+
+        String[] splitString = s.split(" ");
+
+        for (int i = 0; i < splitString.length ; i++) {
+            int sum = 0;
+            String[] splitSplitString = splitString[i].split("");
+            for (int j = 0; j < splitSplitString.length; j++) {
+                sum = sum + values.get(splitSplitString[j]);
+            }
+            sums.put(splitString[i], sum);
+        }
+
+        System.out.println(sums.toString());
+        String answer = "";
+        int answerInt = 0;
+
+        for (String el : splitString) {
+            if (sums.get(el) > answerInt) {
+                answerInt = sums.get(el);
+                answer = el;
+            }
+        }
+        return answer;
+    }
+
 }

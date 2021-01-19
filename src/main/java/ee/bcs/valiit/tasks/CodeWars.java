@@ -6,14 +6,14 @@ import java.util.*;
 
 public class CodeWars {
     public static void main(String[] args) {
-        // System.out.println(buddy(1071625, 1103735));
+         System.out.println(buddy( 298, 5506));
         // System.out.println(findUniq(new double[]{ 1, 1, 1, 2, 1, 1 }));
         // System.out.println(decode("Romani ite domumasasas"));
         // System.out.println(toBinary(11));
         // System.out.println(solve(new int[]{15,7,12,10,11}));
         // PawnGame.redKnight(1,6);
         // System.out.println(sumOfDifferences(new int[]{-17, 17}));
-        Get(100000);
+        // Get(100000);
         // System.out.println(bouncingBall(4, 0.25, 1));
     }
 
