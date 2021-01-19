@@ -1,5 +1,7 @@
 package ee.bcs.valiit.tasks;
 
+import ee.bcs.valiit.controller.Lesson3HardController;
+
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -33,29 +35,17 @@ public class Lesson3Hard {
      * ja kasutaja peab saama uuesti arvata
      * numbri ära aramise korral peab programm välja trükkima mitu katset läks numbri ära arvamiseks
      */
-    public static void randomGame() {
-        Random random = new Random();
-        int i = random.nextInt(100);
-        Scanner scanner = new Scanner(System.in);
-        int count = 10;
-        while (count > 0) {
-            System.out.println("You have " + count + " tries left");
-            System.out.println("Please enter a number: ");
-            int guess = scanner.nextInt();
-            if (guess > i) {
-                System.out.println("Number is smaller");
-                count--;
-            } else if (guess < i) {
-                System.out.println("Number is bigger");
-                count--;
-            } else {
-                System.out.println("Great! You have guessed number correctly.");
-                break;
-            }
-        }
-        if (count == 0) {
-            System.out.println("Game over");
-            System.out.println("Correct number: " + i);
+    public static String randomGame( int x, int randomNr, int tries) {
+
+        if (x < randomNr) {
+            String answer = "Number is bigger and you have " + tries + " left." + randomNr;
+            return answer;
+        } else if (x > randomNr) {
+            String answer = "Number is smaller and you have " + tries + " left." + randomNr;
+            return answer;
+        }  else {
+            String answer = " You have won! Correct number is " + x + " Total " + tries;
+            return answer;
         }
     }
 
