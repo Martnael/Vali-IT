@@ -1,6 +1,9 @@
 package ee.bcs.valiit.tasks;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class CodeWars2 {
     public static void main(String[] args) {
@@ -8,6 +11,7 @@ public class CodeWars2 {
         // snail(array);
         // int[] array2 = {20,1,-1,2,-2,3,3,5,5,1,2,4,20,4,-1,-2,5};
         // findIt(array2);
+        System.out.println(validatePin("0000"));
     }
 
     /**
@@ -32,7 +36,7 @@ public class CodeWars2 {
     /**
      * https://www.codewars.com/kata/54da5a58ea159efa38000836
      * Given an array of integers, find the one that appears an odd number of times.
-     *
+     * <p>
      * There will always be only one integer that appears an odd number of times.
      */
 
@@ -52,7 +56,7 @@ public class CodeWars2 {
         }
 
         for (Integer element : elementCount.keySet()) {
-            if (elementCount.get(element) %2 != 0 ) {
+            if (elementCount.get(element) % 2 != 0) {
                 answer = element;
             }
 
@@ -61,10 +65,11 @@ public class CodeWars2 {
         return answer;
     }
 // ---------------------------------------------------------------------------------------------------------------------
+
     /**
      * https://www.codewars.com/kata/55f8a9c06c018a0d6e000132/java
      * ATM machines allow 4 or 6 digit PIN codes and PIN codes cannot contain anything but exactly 4 digits or exactly 6 digits.
-     *
+     * <p>
      * If the function is passed a valid PIN string, return true, else return false.
      * "1234"   -->  true
      * "12345"  -->  false
@@ -72,11 +77,24 @@ public class CodeWars2 {
      */
 
     public static boolean validatePin(String pin) {
-        String[] splitPin= pin.split("");
-        if (splitPin.length > 4 || splitPin.length < 4) {
-            return false;
+        String[] splitPin = pin.split("");
+        List<Boolean> values = new ArrayList<Boolean>();
+        for (int i = 0; i < splitPin.length; i++) {
+            if (splitPin[i].equals("1") || splitPin[i].equals("2") || splitPin[i].equals("3") || splitPin[i].equals("4") || splitPin[i].equals("5") ||
+                    splitPin[i].equals("6") || splitPin[i].equals("7") || splitPin[i].equals("8") || splitPin[i].equals("9") || splitPin[i].equals("0")) {
+                values.add(true);
+            } else {
+                values.add(false);
+            }
+        }
+        if (values.size() == 4 || values.size() == 6) {
+            if (!values.contains(false)) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return true;
+            return false;
         }
     }
 }
