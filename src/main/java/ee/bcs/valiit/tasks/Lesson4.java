@@ -1,6 +1,5 @@
 package ee.bcs.valiit.tasks;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -245,4 +244,5 @@ public class Lesson4 {
             }
         }
     }
+
 }
