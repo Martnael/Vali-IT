@@ -2,7 +2,10 @@ package ee.bcs.valiit.tasks.solution;
 
 import java.util.Scanner;
 
-public class Lesson2 {
+/*
+//          DON'T CHANGE THIS FILE
+*/
+public class SolutionLesson2 {
 
     public static void main(String[] args) {
         System.out.println(exercise5(1, 10));
@@ -21,6 +24,14 @@ public class Lesson2 {
         for (int i = 9; i >= 0; i--) {
             System.out.print(array[i] + " ");
         }
+    }
+
+    public static int[] exercise1Web(int[] array) {
+        int[] resultArray = new int[array.length];
+        for (int i = array.length-1; i >= 0; i--) {
+            resultArray[array.length-1-i] = array[i];
+        }
+        return resultArray;
     }
 
     // TODO prindi välja x esimest paaris arvu
