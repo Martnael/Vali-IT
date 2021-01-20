@@ -4,12 +4,12 @@ import java.util.*;
 
 public class CodeWars2 {
     public static void main(String[] args) {
-        // int[][] array = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-        // snail(array);
+        int[][] array = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        snail(array);
         // int[] array2 = {20,1,-1,2,-2,3,3,5,5,1,2,4,20,4,-1,-2,5};
         // findIt(array2);
         // System.out.println(validatePin("0000"));
-        System.out.println(high("snpb mx heq rznlxr m opy fvmbzyup hrvwdnnjxd cms f iuygbkqp fntamvx bmolibqnfoym yo cpt"));
+        //System.out.println(high("snpb mx heq rznlxr m opy fvmbzyup hrvwdnnjxd cms f iuygbkqp fntamvx bmolibqnfoym yo cpt"));
     }
 
     /**
@@ -19,11 +19,33 @@ public class CodeWars2 {
 
     public static int[] snail(int[][] array) {
         int lines = 4;
+        int startrow = 0;           // k
+        int endingrow =  4;         // m number of rows
+        int startingcolm = 0;       // l
+        int endcolumn = 4;          // n number of columns
 
-        for (int i = 0; i < lines; i++) {
-            for (int j = 1; j <= lines; j++) {
-                if (j <= (lines - i))
-                    System.out.print(j);
+        int[][] matrix = new int[lines][lines];
+        int i = 0;
+
+        while ( startrow < endingrow && startingcolm < endcolumn) {
+            for ( i = 1; i < endcolumn; i++) {
+                System.out.printf("%3d",matrix[startrow][i]);
+            }
+            startrow++;
+
+            for (i = startrow; i < endingrow; i++) {
+                System.out.printf("%3d",matrix[i][endcolumn-1]);
+            }
+            endcolumn--;
+
+
+        }
+
+        System.out.println();
+
+        for ( i = 0; i < lines; i++) {
+            for (int j = 0; j < lines; j++) {
+                System.out.printf("%3d",matrix[i][j]);
             }
             System.out.println();
         }
@@ -134,7 +156,7 @@ public class CodeWars2 {
 
         String[] splitString = s.split(" ");
 
-        for (int i = 0; i < splitString.length ; i++) {
+        for (int i = 0; i < splitString.length; i++) {
             int sum = 0;
             String[] splitSplitString = splitString[i].split("");
             for (int j = 0; j < splitSplitString.length; j++) {
