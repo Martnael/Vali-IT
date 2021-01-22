@@ -2,15 +2,25 @@ package ee.bcs.valiit.tasks;
 
 public class Customer {
 
+    private int id;
     private String customerName;
     private String socialNumber;
 
     @Override
     public String toString() {
         return "Customer{" +
-                "customerName='" + customerName + '\'' +
-                ", socialnumber=" + socialNumber +
+                "id=" + id +
+                ", customerName='" + customerName + '\'' +
+                ", socialNumber='" + socialNumber + '\'' +
                 '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCustomerName() {

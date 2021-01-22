@@ -27,26 +27,29 @@ public class Lesson4controller {
 
     @PostMapping ("createaccount")
     public String createAccount(@RequestBody Customer customer, @RequestParam("accountnr") String accountNr) {
-        Lesson4ContVersion.createCustomer(customer, template);
-        Lesson4ContVersion.createAccount(accountNr, template);
-        return" Account created";
+        int validation = Lesson4ContVersion.validateCustomer(customer.getSocialNumber(), template);
+        if (validation == 0) {
+            Lesson4ContVersion.createCustomer(customer, template);
+            int customerID = Lesson4ContVersion.getCustomerID(customer.getSocialNumber(), template);
+            Lesson4ContVersion.createAccount(accountNr, customerID, template);
+            return "Client and customer created";
+        } else {
+
+            return "Account created";
+        }
     }
 
+    @GetMapping("getbalance")
+    public String getBalance(@RequestParam("accountnr") String accountNr) {
+        int accountValidation = Lesson4ContVersion.validateAccount(accountNr, template);
+        if (accountValidation == 1) {
+            BigDecimal balance = Lesson4ContVersion.getBalance(accountNr, template);
+            return "Balance for account: " + accountNr + " : " + balance;
+        } else {
+            return "No such account";
+        }
+    }
 
-//    @PostMapping ("createaccounttest")
-//    public String createAccountTest(@RequestBody Account account) {
-//        String accountNr = Lesson4ContVersion.buildAccountNumber(id);
-//        String sql = "INSERT INTO bankaccounts (account_nr, holder_name, balance) " + "VALUES (:account_nr,:holder_name, :balance)";
-//        Map<String, String> paramMap = new HashMap<>();
-//        paramMap.put("account_nr", accountNr );
-//        paramMap.put("holder_name", account.getAccountHolderName());
-//        paramMap.put("balance", "500" );
-//        template.update(sql, paramMap);
-//        accountMap.put(accountNr, account);
-//        id++;
-//        return Lesson4ContVersion.createAccount(accountNr, account);
-//    }
-//
 //    @GetMapping ("all")
 //    public String showAll() {
 //        return accountMap.toString();

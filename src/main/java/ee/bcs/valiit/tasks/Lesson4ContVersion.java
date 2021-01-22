@@ -2,6 +2,7 @@ package ee.bcs.valiit.tasks;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,27 @@ public class Lesson4ContVersion {
 
     }
 
+    public static int validateAccount (String accountNr, NamedParameterJdbcTemplate template){
+        String sql = "SELECT COUNT(*) FROM account WHERE account_nr = :account_nr";
+        Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("account_nr", accountNr);
+        return template.queryForObject(sql, paraMap, Integer.class);
+    }
+
+    public static int validateCustomer (String social_nr, NamedParameterJdbcTemplate template){
+        String sql = "SELECT COUNT(*) FROM customer WHERE social_number = :social_number";
+        Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("social_number", social_nr);
+        return template.queryForObject(sql, paraMap, Integer.class);
+    }
+
+    public static int getCustomerID (String social_nr, NamedParameterJdbcTemplate template) {
+        String sql = "SELECT user_id FROM customer WHERE social_number = :social_number";
+        Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("social_number", social_nr);
+        return template.queryForObject(sql, paraMap, Integer.class);
+    }
+
     public static String createCustomer(Customer customer, NamedParameterJdbcTemplate template) {
         String sql = "INSERT INTO customer (name, social_number) " + "VALUES (:name,:social_number)";
         Map<String, Object> paraMap = new HashMap<>();
@@ -35,25 +57,23 @@ public class Lesson4ContVersion {
         return "customer created";
     }
 
-    public static String createAccount(String accountNr,NamedParameterJdbcTemplate template) {
+    public static String createAccount(String accountNr, int customerID, NamedParameterJdbcTemplate template) {
         String sql = "INSERT INTO account (account_nr, owner_id, balance) " + "VALUES (:account_nr,:owner_id, :balance)";
         Map<String, Object> paraMap = new HashMap<>();
         paraMap.put("account_nr", accountNr);
-        paraMap.put("owner_id", 2);
+        paraMap.put("owner_id", customerID);
         paraMap.put("balance", 0);
         template.update(sql, paraMap);
         return "account created";
     }
 
-
-//    public static String createAccount(String accountNr, Account account) {
-//        String answer = "Account has been created:<br>" + accountNr + "<br>" + account.getAccountHolderName();
-//        return answer;
-//    }
-//
-//    public static boolean validateAccount (String accountNr, HashMap<String, Account> accountMap) {
-//        return accountMap.containsKey(accountNr);
-//    }
+    public static BigDecimal getBalance(String accountNr, NamedParameterJdbcTemplate template ) {
+        String sql = "SELECT balance FROM account WHERE account_nr = :account_nr";
+        Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("account_nr", accountNr);
+        BigDecimal balance = template.queryForObject(sql, paraMap, BigDecimal.class);
+        return balance;
+    }
 
 //    public static String getBalance(String accountNr, HashMap<String, Account> accountMap) {
 //
