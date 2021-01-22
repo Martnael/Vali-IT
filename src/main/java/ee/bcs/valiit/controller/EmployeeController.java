@@ -1,15 +1,12 @@
 package ee.bcs.valiit.controller;
 
 import ee.bcs.valiit.tasks.Employee;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
-@RequestMapping("solution")
+@RequestMapping("solutions")
 @RestController
 
 public class EmployeeController {
@@ -26,10 +23,29 @@ public class EmployeeController {
         return employee;
     }
 
-    @GetMapping ("viewemployee")
-    public Employee viewEmployee (@RequestParam("id") int id) {
+    @GetMapping ("viewemployees")
+    public Employee viewEmployee (@RequestParam ("id") int id) {
         Employee employee = employeeMap.get(id);
         return employee;
     }
 
+    @PostMapping("")
+    public void addEmployee(@RequestBody Employee employee) {
+        employeeMap.put(id, employee);
+        id++;
+    }
+
+    @GetMapping ("allemployees")
+    public HashMap<Integer, Employee> viewAllEmployees () {
+        return employeeMap;
+    }
+    @PutMapping("editemployee")
+    public void editEmployee (@RequestBody Employee employee, @RequestParam("id") int id) {
+        employeeMap.replace(id, employee);
+    }
+
+    @DeleteMapping("deleteemployee")
+    public void deleteEmployee (@RequestParam("id") int id) {
+        employeeMap.remove(id);
+    }
 }

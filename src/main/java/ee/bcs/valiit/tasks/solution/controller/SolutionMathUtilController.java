@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 //          DON'T CHANGE THIS FILE
 */
 
-@RequestMapping("solution/mathutil")
+@RequestMapping("solution/mathutil1")
 @RestController
 public class SolutionMathUtilController {
 

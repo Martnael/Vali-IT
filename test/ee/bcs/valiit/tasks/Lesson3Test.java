@@ -22,7 +22,6 @@ class Lesson3Test {
         assertTimeout(Duration.ofSeconds(1), () -> {
                     for (int i = 0; i < 100000; i++) {
                         int j = Lesson3.sum(test);
-                        System.out.println(j);
                     }
 
                 }
@@ -46,6 +45,10 @@ class Lesson3Test {
 
     @Test
     void reverseString() {
+        String test = "Test";
+        String actualReverseString = Lesson3.reverseString(test);
+        String expectedString = "tseT";
+        assertEquals(expectedString, actualReverseString);
     }
 
     @Test
