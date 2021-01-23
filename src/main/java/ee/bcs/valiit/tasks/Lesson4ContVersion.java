@@ -1,9 +1,12 @@
 package ee.bcs.valiit.tasks;
 
+import ee.bcs.valiit.tasks.solution.SolutionEmployee;
+import ee.bcs.valiit.tasks.solution.controller.SolutionEmployeeController;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Lesson4ContVersion {
@@ -27,6 +30,10 @@ public class Lesson4ContVersion {
 
     }
 
+    public static boolean isPositive(BigDecimal sum) {
+        return sum.compareTo(BigDecimal.ZERO) > 0;
+    }
+
     public static int validateAccount (String accountNr, NamedParameterJdbcTemplate template){
         String sql = "SELECT COUNT(*) FROM account WHERE account_nr = :account_nr";
         Map<String, String> paraMap = new HashMap<>();
@@ -45,6 +52,25 @@ public class Lesson4ContVersion {
         String sql = "SELECT user_id FROM customer WHERE social_number = :social_number";
         Map<String, String> paraMap = new HashMap<>();
         paraMap.put("social_number", social_nr);
+        return template.queryForObject(sql, paraMap, Integer.class);
+    }
+
+    public static int getAccountID (String accountNr, NamedParameterJdbcTemplate template) {
+        String sql = "SELECT account_id FROM account WHERE account_nr = :account_nr";
+        Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("account_nr", accountNr);
+        return template.queryForObject(sql, paraMap, Integer.class);
+    }
+
+    public static Boolean isEnoughMoney (String accountNr, BigDecimal sum, NamedParameterJdbcTemplate template) {
+        BigDecimal balance = getBalance(accountNr, template);
+        Map<String, String> paraMap = new HashMap<>();
+        return balance.compareTo(sum) >= 0;
+    }
+    ///////// DOES NOT WORK //////
+    public static int getLastAccountNr (NamedParameterJdbcTemplate template) {
+        String sql = "SELECT MAX(:account_id) FROM account";
+        Map<String, Object> paraMap = new HashMap<>();
         return template.queryForObject(sql, paraMap, Integer.class);
     }
 
@@ -75,95 +101,70 @@ public class Lesson4ContVersion {
         return balance;
     }
 
-//    public static String getBalance(String accountNr, HashMap<String, Account> accountMap) {
-//
-//        if (validateAccount(accountNr, accountMap)) {
-//            Account account = accountMap.get(accountNr);
-//            BigDecimal balance = account.getAccountBalance();
-//            String answer = "Current balance for account: " + accountNr + "<br>" + balance + "  EUR";
-//            return answer;
-//        } else {
-//            String answer = "We dont have such account please!" + "<br>" + "Please try again";
-//            return answer;
-//        }
-//    }
-//
-//    public static boolean isPositive(String value) {
-//        BigDecimal number = new BigDecimal(value);
-//        boolean answer = number.compareTo(BigDecimal.ZERO) > 0;
-//        return answer;
-//    }
-//
-//    public static BigDecimal accountBalance(String accountnr, HashMap<String, Account> accountMap) {
-//        return accountMap.get(accountnr).getAccountBalance();
-//    }
-//
-//    public static String depositMoney(String accountNr, String depositSum, HashMap<String, Account> accountMap) {
-//        if (validateAccount(accountNr,accountMap) && isPositive(depositSum)) {
-//            BigDecimal add = new BigDecimal(depositSum);
-//            Account account = accountMap.get(accountNr);
-//            BigDecimal newBalance = account.getAccountBalance().add(add);
-//            account.setAccountBalance(newBalance);
-//            accountMap.put(accountNr, account);
-//            String answer = "Transfer complete. <br> Balance for account: " + accountNr + "<br>" + account.getAccountBalance();
-//            return answer;
-//        } else {
-//            String answer = "We dont have such account or you try to insert negative amount of money to account";
-//            return answer;
-//        }
-//    }
-//
-//    public static String withdrawMoney(String accountNr, String sum, HashMap<String, Account> accountMap) {
-//        Account account = accountMap.get(accountNr);
-//        BigDecimal withdrawSum = new BigDecimal(sum);
-//        BigDecimal balance = accountBalance(accountNr, accountMap);
-//        Boolean isPositive = isPositive(sum);
-//        Boolean existBankAccount = validateAccount(accountNr, accountMap);
-//
-//        if (existBankAccount && isPositive && balance.compareTo(withdrawSum)>0) {
-//            account.setAccountBalance(balance.subtract(withdrawSum));
-//            accountMap.put(accountNr, account);
-//            String answer = "Withdraw transaction completed.<br>Current balance for account: " + accountNr + "        " + account.getAccountBalance();
-//            return answer;
-//        } else if (!isPositive(sum)) {
-//            String answer = "You can not withdraw negative amount from your account";
-//            return answer;
-//        } else if (balance.compareTo(withdrawSum)<0) {
-//            String answer = "You dont have so much money on your account!";
-//            return answer;
-//        } else {
-//            String answer = "Account number does not exist";
-//            return answer;
-//        }
-//    }
+    public static void depositMoney (Transfer transfer, NamedParameterJdbcTemplate template) {
+        BigDecimal balance = getBalance(transfer.getAccountTo(), template);
+        BigDecimal newBalance = balance.add(transfer.getSum());
+        updateBalance(transfer.getAccountTo(), newBalance, template);
+    }
 
- //   public static String transferMoney (String accountFrom, String accountTo, String sum, HashMap<String, BigDecimal> accountBalanceMap ){
-  //      BigDecimal accountBalanceFrom = accountBalance(accountFrom, accountBalanceMap);
-  //      BigDecimal transferSum = new BigDecimal(sum);
-  //      if (existBankAccount(accountFrom, accountBalanceMap) && existBankAccount(accountTo, accountBalanceMap) && isPositive(sum) && accountBalanceFrom.compareTo(transferSum)>0) {
-  //          BigDecimal newBalanceFrom = accountBalanceMap.get(accountFrom).subtract(transferSum);
- //           BigDecimal newBalanceTo = accountBalanceMap.get(accountTo).add(transferSum);
- //           accountBalanceMap.put(accountTo, newBalanceTo);
- //           String answer = "Transfer completed.<br>New balance for account " + accountFrom + " :  " + accountBalanceMap.get(accountFrom).toString() + "<br>" +
- //                   "New balance for account: " + accountTo + " :  " + accountBalanceMap.get(accountTo).toString();
- //           return answer;
- //       } else if (!existBankAccount(accountFrom, accountBalanceMap)) {
- //           String answer = "Account from is wrong";
- //           return answer;
- //       } else if (!existBankAccount(accountTo, accountBalanceMap)) {
- //           String answer = "Account to is wrong";
- //           return answer;
- //       } else if (!isPositive(sum)) {
- //           String answer = "You can not transfer negative amount";
- //           return answer;
- //       } else if (accountBalanceFrom.compareTo(transferSum)<0) {
- //           String answer = "You dont have money to transfer";
- //           return answer;
- //       } else {
- //           String answer = "Something went terribly wrong";
- //           return answer;
-//        }
- //   }
+    public static void withdrawMoney (Transfer transfer, NamedParameterJdbcTemplate template) {
+        BigDecimal balance = getBalance(transfer.getAccountFrom(), template);
+        BigDecimal newBalance = balance.subtract(transfer.getSum());
+        updateBalance(transfer.getAccountFrom(), newBalance, template);
+    }
+
+    public static void transferMoney (Transfer transfer, NamedParameterJdbcTemplate template) {
+        BigDecimal balanceFrom = getBalance(transfer.getAccountFrom(), template);
+        BigDecimal newBalanceFrom = balanceFrom.subtract(transfer.getSum());
+        BigDecimal balanceTo = getBalance(transfer.getAccountTo(), template);
+        BigDecimal newBalanceTo = balanceTo.add(transfer.getSum());
+        updateBalance(transfer.getAccountFrom(), newBalanceFrom, template);
+        updateBalance(transfer.getAccountTo(), newBalanceTo, template);
+    }
+
+    public static void updateBalance (String accountNr, BigDecimal newBalance, NamedParameterJdbcTemplate template) {
+        String sql = "UPDATE account SET balance = :balance WHERE account_nr= :account_nr";
+        Map<String, Object> paramMap = new HashMap();
+        paramMap.put("account_nr", accountNr);
+        paramMap.put("balance", newBalance);
+        template.update(sql, paramMap);
+    }
+
+    public static void saveTransaction (Transfer transfer, NamedParameterJdbcTemplate template ) {
+        String sql = "INSERT INTO transaction (account_from, account_to, sum, date_time) VALUES (:account_from,:account_to, :sum, :date_time)";
+        Map<String, Object> paramMap = new HashMap();
+        paramMap.put("account_from", getAccountID(transfer.getAccountFrom(), template));
+        paramMap.put("account_to", getAccountID(transfer.getAccountTo(), template));
+        paramMap.put("sum", transfer.getSum());
+        paramMap.put("date_time", transfer.getDatetime());
+        template.update(sql, paramMap);
+    }
+
+    public static List<Account> allAccount(NamedParameterJdbcTemplate template) {
+        String sql ="SELECT account.account_nr, account.balance, customer.name  FROM account JOIN customer on account.owner_id = customer.user_id";
+        List<Account> result = template.query(sql, new HashMap<>(), new AccountRowMapper());
+        return result;
+    }
+
+    public static String printAccounts (List<Account> allaccounts) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
+                "<tr>" +
+                "<td><b>Account Owner</b></td>" +
+                "<td><b>Account Number</b></td>" +
+                "<td><b>Balance</b></td>" +
+                "</tr>");
+        for (Account account : allaccounts) {
+            String row =    "<tr>" +
+                            "<td>" + account.getOwner() + "</td>" +
+                            "<td>" + account.getAccountNumber() + "</td>" +
+                            "<td>" + account.getAccountBalance() + "</td>" +
+                            "</tr>";
+            sb.append(row);
+        }
+        return sb.toString();
+    }
+
 }
 
 

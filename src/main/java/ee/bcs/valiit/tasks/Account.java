@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class Account {
 
     private int id;
+    private String owner;
     private String accountNumber;
     private BigDecimal accountBalance = BigDecimal.ZERO;
 
@@ -39,5 +40,13 @@ public class Account {
 
     public void setAccountBalance(BigDecimal accountBalance) {
         this.accountBalance = accountBalance;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }
