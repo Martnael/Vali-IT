@@ -23,8 +23,9 @@ public class MyBankServices {
         return answer;
     }
 
-    public String createAccount(MyBankCustomer myBankCustomer, String accountNr) {
+    public String createAccount(MyBankCustomer myBankCustomer) {
         int validation = myBankRepository.validateCustomer(myBankCustomer.getSocialNumber());
+        String accountNr = buildAccountNumber();
         if (validation == 0) {
             myBankRepository.createCustomer(myBankCustomer);
             int customerID = myBankRepository.getCustomerID(myBankCustomer.getSocialNumber());
@@ -83,11 +84,15 @@ public class MyBankServices {
         }
     }
 
-    public static String buildAccountNumber (int i) {
+    public String buildAccountNumber () {
         StringBuilder sb = new StringBuilder();
         sb.append("EE");
-        sb.append(i);
-        return sb.toString();
+        String lastAccountNr = myBankRepository.getLastAccountNr();
+        int length = lastAccountNr.length();
+        String newString = lastAccountNr.substring(2, length);
+        int newAccountNr = 1 + Integer.parseInt(newString);
+        String newNr = String.valueOf(newAccountNr);
+        return sb.append(newNr).toString();
     }
 
     public boolean isPositive  (BigDecimal sum) {
@@ -144,12 +149,6 @@ public class MyBankServices {
         }
         return sb.toString();
     }
-
-    public String getLastAccountNr () {
-        return myBankRepository.getLastAccountNr();
-    }
-
-
 
 }
 

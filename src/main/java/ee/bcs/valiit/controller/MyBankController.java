@@ -21,8 +21,8 @@ public class MyBankController {
     }
 
     @PostMapping("createaccount")
-    public String createAccount(@RequestBody MyBankCustomer myBankCustomer, @RequestParam("accountnr") String accountNr) {
-        return myBankServices.createAccount(myBankCustomer, accountNr);
+    public String createAccount(@RequestBody MyBankCustomer myBankCustomer) {
+        return myBankServices.createAccount(myBankCustomer);
     }
 
     @GetMapping("getbalance")
@@ -52,6 +52,6 @@ public class MyBankController {
 
     @GetMapping("/lastaccount")
     public String lastAccount () {
-        return myBankServices.getLastAccountNr();
+        return myBankServices.buildAccountNumber();
     }
 }

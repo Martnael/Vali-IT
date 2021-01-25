@@ -99,6 +99,4 @@ public class MyBankRepository {
         return template.query(sql, new HashMap<>(), new MyBankAccountRowMapper());
     }
 
-
-
 }
