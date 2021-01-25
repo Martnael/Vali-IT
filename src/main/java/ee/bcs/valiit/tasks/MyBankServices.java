@@ -84,7 +84,7 @@ public class MyBankServices {
         }
     }
 
-    public String buildAccountNumber () {
+    public String buildAccountNumber() {
         StringBuilder sb = new StringBuilder();
         sb.append("EE");
         String lastAccountNr = myBankRepository.getLastAccountNr();
@@ -95,11 +95,11 @@ public class MyBankServices {
         return sb.append(newNr).toString();
     }
 
-    public boolean isPositive  (BigDecimal sum) {
+    public boolean isPositive(BigDecimal sum) {
         return sum.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    public Boolean isEnoughMoney (String accountNr, BigDecimal sum) {
+    public Boolean isEnoughMoney(String accountNr, BigDecimal sum) {
         BigDecimal balance = myBankRepository.getBalance(accountNr);
         return balance.compareTo(sum) >= 0;
     }
@@ -130,7 +130,7 @@ public class MyBankServices {
     }
 
 
-    public String printAccounts () {
+    public String printAccounts() {
         List<MyBankAccount> allAccounts = myBankRepository.allAccount();
         StringBuilder sb = new StringBuilder();
         sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
@@ -140,11 +140,35 @@ public class MyBankServices {
                 "<td><b>Balance</b></td>" +
                 "</tr>");
         for (MyBankAccount account : allAccounts) {
-            String row =    "<tr>" +
-                            "<td>" + account.getOwner() + "</td>" +
-                            "<td>" + account.getAccountNumber() + "</td>" +
-                            "<td>" + account.getAccountBalance() + "</td>" +
-                            "</tr>";
+            String row = "<tr>" +
+                    "<td>" + account.getOwner() + "</td>" +
+                    "<td>" + account.getAccountNumber() + "</td>" +
+                    "<td>" + account.getAccountBalance() + "</td>" +
+                    "</tr>";
+            sb.append(row);
+        }
+        return sb.toString();
+    }
+
+    public String printAllTransfers() {
+        List<MyBankTransaction> allTransactions = myBankRepository.allTransactions();
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
+                "<tr>" +
+                "<td><b>Transacation ID</b></td>" +
+                "<td><b>Date</b></td>" +
+                "<td><b>Account From</b></td>" +
+                "<td><b>Account To</b></td>" +
+                "<td><b>Sum</b></td>" +
+                "</tr>");
+        for (MyBankTransaction transaction : allTransactions) {
+            String row = "<tr>" +
+                    "<td>" + transaction.getTransactionID() + "</td>" +
+                    "<td>" + transaction.getDatetime() + "</td>" +
+                    "<td>" + transaction.getAccountFrom() + "</td>" +
+                    "<td>" + transaction.getAccountTo() + "</td>" +
+                    "<td>" + transaction.getSum() + "</td>" +
+                    "</tr>";
             sb.append(row);
         }
         return sb.toString();

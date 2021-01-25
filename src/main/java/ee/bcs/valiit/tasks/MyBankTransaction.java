@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class MyBankTransaction {
+    int transactionID;
     String accountFrom =" ";
     String accountTo =" ";
     BigDecimal sum = BigDecimal.ZERO;
@@ -48,5 +49,13 @@ public class MyBankTransaction {
 
     public void setSum(BigDecimal sum) {
         this.sum = sum;
+    }
+
+    public int getTransactionID() {
+        return transactionID;
+    }
+
+    public void setTransactionID(int transactionID) {
+        this.transactionID = transactionID;
     }
 }

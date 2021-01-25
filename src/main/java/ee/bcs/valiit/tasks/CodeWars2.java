@@ -1,11 +1,18 @@
 package ee.bcs.valiit.tasks;
 
+import javassist.expr.NewArray;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CodeWars2 {
     public static void main(String[] args) {
-        int[][] array = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-        snail(array);
+        String[] test = {"NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"};
+        dirReduc(test);
+        //String proov = "01|15|59, 1|47|16, 01|17|20, 1|32|34, 2|17|17";
+        //System.out.println(stat(proov));
+        // int[][] array = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        // snail(array);
         // int[] array2 = {20,1,-1,2,-2,3,3,5,5,1,2,4,20,4,-1,-2,5};
         // findIt(array2);
         // System.out.println(validatePin("0000"));
@@ -178,4 +185,183 @@ public class CodeWars2 {
         return answer;
     }
 
+// ---------------------------------------------------------------------------------------------------------------------
+
+/**
+ * https://www.codewars.com/kata/55b3425df71c1201a800009c
+ * Statistics for an Athletic Association
+  */
+    public static String stat(String strg) {
+
+    return "valmis";
+
+    }
+
+// ---------------------------------------------------------------------------------------------------------------------
+/**
+ * https://www.codewars.com/kata/550f22f4d758534c1100025a/java
+ * Directions Reduction
+ */
+    public static String[] dirReduc(String[] arr) {
+        if (arr == null || arr.length <= 1) {
+            return arr;
+        }
+
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (("NORTH".equals(arr[i]) && "SOUTH".equals(arr[i + 1])) ||
+                    ("SOUTH".equals(arr[i]) && "NORTH".equals(arr[i + 1])) ||
+                    ("EAST".equals(arr[i]) && "WEST".equals(arr[i + 1])) ||
+                    ("WEST".equals(arr[i]) && "EAST".equals(arr[i + 1]))) {
+                arr[i] = null;
+                arr[i + 1] = null;
+            }
+        }
+
+        final String[] newArr = Arrays.stream(arr).filter(s -> s != null).toArray(String[]::new);
+
+        if (newArr.length == arr.length) {
+            return arr;
+        } else {
+            return dirReduc(newArr);
+        }
+    }
+
 }
+//        String[] mystery = {"NORTH", "WEST", "SOUTH", "EAST"};
+//        if (arr == mystery) {
+//            return arr;
+//        }
+//        int directionNS = 0;
+//        int directionWE = 0;
+//        for (int i=0; i<arr.length; i++) {
+//            if (arr[i].equals("NORTH")) {
+//                directionNS++;
+//            } else if (arr[i].equals("SOUTH")){
+//                directionNS--;
+//            } else if (arr[i].equals("EAST")){
+//                directionWE++;
+//            } else {
+//                directionWE--;
+//            }
+//        }
+//
+//        System.out.println(directionNS);
+//        System.out.println(directionWE);
+//
+//        List<String> list = new ArrayList<>();
+//
+//        for (int i = 0; i<arr.length; i++) {
+//            if (arr[i].equals("NORTH") && directionNS > 0) {
+//                list.add("NORTH");
+//                directionNS--;
+//            } else if ((arr[i].equals("SOUTH") && directionNS < 0)) {
+//                list.add("SOUTH");
+//                directionNS++;
+//            } else if ((arr[i].equals("EAST") && directionWE > 0)) {
+//                list.add("EAST");
+//                directionWE--;
+//            } else if ((arr[i].equals("WEST") && directionWE < 0)) {
+//                list.add("WEST");
+//                directionWE++;
+//            } else {
+//                continue;
+//            }
+//        }
+//        String[] answer = list.toArray(String[]::new);
+//
+//        for (String s : answer) {
+//            System.out.println(s);
+//        }
+//        return answer;
+//
+//        if (arr == null || arr.length <= 1) {
+//            return arr;
+//        }
+//
+//        for (int i = 0; i < arr.length - 1; i++) {
+//            if (("NORTH".equals(arr[i]) && "SOUTH".equals(arr[i + 1])) ||
+//                    ("SOUTH".equals(arr[i]) && "NORTH".equals(arr[i + 1])) ||
+//                    ("EAST".equals(arr[i]) && "WEST".equals(arr[i + 1])) ||
+//                    ("WEST".equals(arr[i]) && "EAST".equals(arr[i + 1]))) {
+//                arr[i] = null;
+//                arr[i + 1] = null;
+//            }
+//        }
+//        final String[] newArr = Arrays.stream(arr)
+//                .filter(s -> s != null)
+//                .toArray(String[]::new);
+//
+//        if (newArr.length == arr.length) {
+//            return arr;
+//        } else {
+//            return dirReduc(newArr);
+//        }
+//    }
+//}
+//    }
+//        List<String> list = new ArrayList<>();
+//        for(int i= 0; i<arr.length;i++) {
+//            if (i != arr.length - 1 && ((arr[i].equals("NORTH") && arr[i + 1].equals("SOUTH")) || (arr[i].equals("SOUTH") && arr[i + 1].equals("NORTH")))) {
+//                i++;
+//            } else if (i != arr.length - 1 && ((arr[i].equals("WEST") && arr[i + 1].equals("EAST")) || (arr[i].equals("EAST") && arr[i + 1].equals("WEST")))) {
+//                i++;
+//            } else {
+//                list.add(arr[i]);
+//            }
+//        }
+//        System.out.println(list.toString());
+
+
+
+    // TOOTAV LAHENDUS AGA EI SOBI !!!!
+//        if (arr == null || arr.length <= 1) {
+//            return arr;
+//        }
+//
+//        List<String> almostAnswer = new ArrayList<>();
+//        HashMap<String, Integer> elementCount = new HashMap();
+//        for (String element : arr) {
+//            int count = 0;
+//            for (int i = 0; i < arr.length; i++) {
+//                if (arr[i] == element) {
+//                    count++;
+//                }
+//            }
+//            if (!elementCount.containsKey(element)) {
+//                elementCount.put(element, count);
+//            }
+//        }
+//
+//        int northSouthRate = elementCount.get("NORTH") - elementCount.get("SOUTH");
+//        int westEastRate = elementCount.get("EAST") - elementCount.get("WEST");
+//
+//        if (northSouthRate < 0) {
+//            while (northSouthRate < 0) {
+//                almostAnswer.add("SOUTH");
+//                northSouthRate++;
+//            }
+//        } else {
+//            while (northSouthRate > 0) {
+//                almostAnswer.add("NORTH");
+//                northSouthRate--;
+//            }
+//        }
+//
+//        if (westEastRate < 0) {
+//            while (westEastRate < 0) {
+//                almostAnswer.add("WEST");
+//                westEastRate++;
+//            }
+//        } else {
+//            while (westEastRate > 0) {
+//                almostAnswer.add("WEST");
+//                westEastRate--;
+//            }
+//        }
+//        String[] strings = almostAnswer.toArray(String[]::new);
+//        return strings;
+//
+//    }
+
+
+

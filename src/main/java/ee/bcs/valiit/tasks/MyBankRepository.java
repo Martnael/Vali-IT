@@ -99,4 +99,9 @@ public class MyBankRepository {
         return template.query(sql, new HashMap<>(), new MyBankAccountRowMapper());
     }
 
+    public List<MyBankTransaction> allTransactions () {
+        String  sql = "SELECT t.transfer_id, t.sum, t.date_time, a1.account_nr AS account_nr_to, a2.account_nr AS account_nr_from FROM transaction t INNER JOIN account a1 ON t.account_to = a1.account_id INNER JOIN account a2 ON t.account_from = a2.account_id";
+        return template.query(sql, new HashMap<>(), new MyBankTransactionRowMapper());
+    }
+
 }

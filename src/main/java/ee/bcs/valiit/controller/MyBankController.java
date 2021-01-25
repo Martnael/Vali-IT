@@ -54,4 +54,9 @@ public class MyBankController {
     public String lastAccount () {
         return myBankServices.buildAccountNumber();
     }
+
+    @GetMapping("/alltransactions")
+    public String allTransactions () {
+        return myBankServices.printAllTransfers();
+    }
 }
