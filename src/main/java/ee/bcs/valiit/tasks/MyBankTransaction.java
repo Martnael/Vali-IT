@@ -3,7 +3,7 @@ package ee.bcs.valiit.tasks;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Transfer {
+public class MyBankTransaction {
     String accountFrom =" ";
     String accountTo =" ";
     BigDecimal sum = BigDecimal.ZERO;
