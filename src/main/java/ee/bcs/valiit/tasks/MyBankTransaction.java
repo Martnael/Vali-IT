@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 
 public class MyBankTransaction {
     int transactionID;
-    String accountFrom ="withdraw/deposit";
-    String accountTo ="withdraw/deposit";
+    String accountFrom ="EE1";
+    String accountTo ="EE1";
     BigDecimal sum = BigDecimal.ZERO;
     String type = " ";
     String Datetime = LocalDateTime.now().toString();

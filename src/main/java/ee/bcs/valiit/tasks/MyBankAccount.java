@@ -2,6 +2,7 @@ package ee.bcs.valiit.tasks;
 
 import java.math.BigDecimal;
 
+
 public class MyBankAccount {
 
     private int id;

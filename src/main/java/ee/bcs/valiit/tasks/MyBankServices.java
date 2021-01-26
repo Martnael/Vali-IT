@@ -9,18 +9,21 @@ import java.util.List;
 @Service
 public class MyBankServices {
 
+    String noSuchAccount = "No such account in system";
+    String haveToPositive = "Amount have to be positive";
+
     @Autowired
     private MyBankRepository myBankRepository;
 
     public static String menu() {
-        String answer = "Please enter a command: " + "<br>" +
+       return   "Please enter a command: " + "<br>" +
                 "1. createAccount" + "<br>" +
                 "2. getBalance" + "<br>" +
                 "3. depositMoney" + "<br>" +
                 "4. withdrawMoney" + "<br>" +
                 "5. transfer" + "<br>" +
                 "6. exit";
-        return answer;
+
     }
 
     public String createAccount(MyBankCustomer myBankCustomer) {
@@ -44,7 +47,7 @@ public class MyBankServices {
             BigDecimal balance = myBankRepository.getBalance(accountNr);
             return "Balance for account: " + accountNr + " : " + balance;
         } else {
-            return "No such account";
+            return noSuchAccount;
         }
     }
 
@@ -58,9 +61,9 @@ public class MyBankServices {
             myBankRepository.saveTransaction(myBankTransaction);
             return "Transaction completed";
         } else if (accountValidation > 0 && !isPositive) {
-            return "Sum have to be positive";
+            return haveToPositive;
         } else {
-            return "No such account";
+            return noSuchAccount;
         }
     }
 
@@ -78,9 +81,9 @@ public class MyBankServices {
             } else
                 return "Not enough money";
         } else if (!isSumPositive) {
-            return "Sum have to be positive";
+            return haveToPositive;
         } else {
-            return "No such account";
+            return noSuchAccount;
         }
     }
 
@@ -123,7 +126,7 @@ public class MyBankServices {
                 return "Not enough money";
             }
         } else if (!isSumPositive) {
-            return "Sum have to be positive";
+            return haveToPositive;
         } else {
             return "Account number wrong";
         }

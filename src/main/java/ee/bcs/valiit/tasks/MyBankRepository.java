@@ -30,10 +30,10 @@ public class MyBankRepository {
         return template.queryForObject(sql, paraMap, Integer.class);
     }
 
-    public int getCustomerID (String social_nr) {
+    public int getCustomerID (String socialNr) {
         String sql = "SELECT user_id FROM customer WHERE social_number = :social_number";
         Map<String, String> paraMap = new HashMap<>();
-        paraMap.put("social_number", social_nr);
+        paraMap.put("social_number", socialNr);
         return template.queryForObject(sql, paraMap, Integer.class);
     }
 
@@ -46,10 +46,10 @@ public class MyBankRepository {
         template.update(sql, paraMap);
     }
 
-    public int validateCustomer (String social_nr){
+    public int validateCustomer (String socialNr){
         String sql = "SELECT COUNT(*) FROM customer WHERE social_number = :social_number";
         Map<String, String> paraMap = new HashMap<>();
-        paraMap.put("social_number", social_nr);
+        paraMap.put("social_number", socialNr);
         return template.queryForObject(sql, paraMap, Integer.class);
     }
 
@@ -62,10 +62,10 @@ public class MyBankRepository {
 
     public String getLastAccountNr () {
         String sql = "SELECT MAX(account_id) FROM account";
-        int last_id = template.queryForObject(sql, new HashMap<>(), Integer.class);
+        int lastId = template.queryForObject(sql, new HashMap<>(), Integer.class);
         String sql2 = "SELECT account_nr FROM account WHERE account_id = :account_id";
         Map<String, Object> paraMap = new HashMap<>();
-        paraMap.put("account_id", last_id);
+        paraMap.put("account_id", lastId);
         return template.queryForObject(sql2, paraMap, String.class);
     }
 
