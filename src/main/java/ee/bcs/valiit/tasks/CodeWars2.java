@@ -2,13 +2,15 @@ package ee.bcs.valiit.tasks;
 
 import javassist.expr.NewArray;
 
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class CodeWars2 {
     public static void main(String[] args) {
-        String[] test = {"NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"};
-        dirReduc(test);
+        stat();
+        //String[] test = {"NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"};
+        //dirReduc(test);
         //String proov = "01|15|59, 1|47|16, 01|17|20, 1|32|34, 2|17|17";
         //System.out.println(stat(proov));
         // int[][] array = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
@@ -189,12 +191,28 @@ public class CodeWars2 {
 
 /**
  * https://www.codewars.com/kata/55b3425df71c1201a800009c
+ * String proov = "01|15|59, 1|47|16, 01|17|20, 1|32|34, 2|17|17";
+ * FORMAT HH|MM|SS
  * Statistics for an Athletic Association
   */
-    public static String stat(String strg) {
 
+    public static String stat() {
+        String proov = "01|15|59, 1|47|16, 01|17|20, 1|32|34, 2|17|17";
+        String[] split = proov.split(", ");
+
+        for (String s : split) {
+            System.out.println(s);
+        }
     return "valmis";
 
+    }
+
+    public static int calculateSeconds(String time) {
+        String[] split = time.split("|");
+        int hoursToSec = Integer.parseInt(split[0]) * 360;
+        int minToSec = Integer.parseInt(split[1]) * 60;
+        int sec = Integer.parseInt(split[2]);
+        return hoursToSec + minToSec + sec;
     }
 
 // ---------------------------------------------------------------------------------------------------------------------

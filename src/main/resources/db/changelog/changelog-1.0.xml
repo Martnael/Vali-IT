@@ -22,4 +22,40 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="2021-01-26 bank v.1" author="Mart Nael">
+        <createTable tableName="customer">
+            <column name="user_id" type="int" autoIncrement="true" >
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="text"/>
+            <column name="social_number" type="text"/>
+        </createTable>
+
+        <createTable tableName="account">
+            <column name="account_id" type="int" autoIncrement="true" >
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="account_nr" type="text"/>
+            <column name="owner_id" type="int">
+                <constraints foreignKeyName="fk_account_owner" references="customer(user_id)" deleteCascade="true"/>
+            </column>
+            <column name="balance" type="numeric"/>
+        </createTable>
+
+        <createTable tableName="transaction">
+            <column name="transfer_id" type="int" autoIncrement="true" >
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="account_from" type="int">
+                <constraints foreignKeyName="fk_account_from" references="account(account_id)" deleteCascade="true"/>
+            </column>
+            <column name="account_to" type="int">
+                <constraints foreignKeyName="fk_account_to" references="account(account_id)" deleteCascade="true"/>
+            </column>
+            <column name="sum" type="numeric"/>
+            <column name="date_time" type="text"/>
+        </createTable>
+
+    </changeSet>
 </databaseChangeLog>
