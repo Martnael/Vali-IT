@@ -85,11 +85,12 @@ public class MyBankRepository {
     }
 
     public void saveTransaction (MyBankTransaction myBankTransaction) {
-        String sql = "INSERT INTO transaction (account_from, account_to, sum, date_time) VALUES (:account_from,:account_to, :sum, :date_time)";
+        String sql = "INSERT INTO transaction (account_from, account_to, sum, type, date_time) VALUES (:account_from,:account_to, :sum, :type, :date_time)";
         Map<String, Object> paramMap = new HashMap();
         paramMap.put("account_from", getAccountID(myBankTransaction.getAccountFrom()));
         paramMap.put("account_to", getAccountID(myBankTransaction.getAccountTo()));
         paramMap.put("sum", myBankTransaction.getSum());
+        paramMap.put("type", myBankTransaction.getType());
         paramMap.put("date_time", myBankTransaction.getDatetime());
         template.update(sql, paramMap);
     }
@@ -100,7 +101,7 @@ public class MyBankRepository {
     }
 
     public List<MyBankTransaction> allTransactions () {
-        String  sql = "SELECT t.transfer_id, t.sum, t.date_time, a1.account_nr AS account_nr_to, a2.account_nr AS account_nr_from FROM transaction t INNER JOIN account a1 ON t.account_to = a1.account_id INNER JOIN account a2 ON t.account_from = a2.account_id";
+        String  sql = "SELECT t.transfer_id, t.sum, t.date_time, t.type, a1.account_nr AS account_nr_to, a2.account_nr AS account_nr_from FROM transaction t INNER JOIN account a1 ON t.account_to = a1.account_id INNER JOIN account a2 ON t.account_from = a2.account_id";
         return template.query(sql, new HashMap<>(), new MyBankTransactionRowMapper());
     }
 

@@ -1,6 +1,7 @@
 package ee.bcs.valiit.controller;
 
 import ee.bcs.valiit.tasks.MyBankCustomer;
+import ee.bcs.valiit.tasks.MyBankException;
 import ee.bcs.valiit.tasks.MyBankServices;
 import ee.bcs.valiit.tasks.MyBankTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,18 @@ public class MyBankController {
     }
 
     @PostMapping("createaccount")
-    public String createAccount(@RequestBody MyBankCustomer myBankCustomer) {
-        return myBankServices.createAccount(myBankCustomer);
+    public void createAccount(@RequestBody MyBankCustomer myBankCustomer) {
+        myBankServices.createAccount(myBankCustomer);
     }
 
     @GetMapping("getbalance")
-    public String getBalance(@RequestParam("accountnr") String accountNr) {
-        return myBankServices.getBalance(accountNr);
+    public void getBalance(@RequestParam("accountnr") String accountNr) {
+        myBankServices.getBalance(accountNr);
     }
 
     @PostMapping("depositmoney")
-    public String depositMoney(@RequestBody MyBankTransaction myBankTransaction) {
-        return myBankServices.depositMoney(myBankTransaction);
+    public void depositMoney(@RequestBody MyBankTransaction myBankTransaction) {
+        myBankServices.depositMoney(myBankTransaction);
     }
 
     @PostMapping("withdrawmoney")

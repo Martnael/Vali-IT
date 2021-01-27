@@ -53,9 +53,9 @@
             <column name="account_to" type="int">
                 <constraints foreignKeyName="fk_account_to" references="account(account_id)" deleteCascade="true"/>
             </column>
+            <column name="type" type="text"/>
             <column name="sum" type="numeric"/>
             <column name="date_time" type="text"/>
         </createTable>
-
     </changeSet>
 </databaseChangeLog>

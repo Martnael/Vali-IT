@@ -11,12 +11,13 @@ public class MyBankServices {
 
     String noSuchAccount = "No such account in system";
     String haveToPositive = "Amount have to be positive";
+    String notEnoughMoney = "Not enough money on account";
 
     @Autowired
     private MyBankRepository myBankRepository;
 
     public static String menu() {
-       return   "Please enter a command: " + "<br>" +
+        return "Please enter a command: " + "<br>" +
                 "1. createAccount" + "<br>" +
                 "2. getBalance" + "<br>" +
                 "3. depositMoney" + "<br>" +
@@ -26,65 +27,66 @@ public class MyBankServices {
 
     }
 
-    public String createAccount(MyBankCustomer myBankCustomer) {
+    public void createAccount(MyBankCustomer myBankCustomer) {
         int validation = myBankRepository.validateCustomer(myBankCustomer.getSocialNumber());
         String accountNr = buildAccountNumber();
         if (validation == 0) {
             myBankRepository.createCustomer(myBankCustomer);
             int customerID = myBankRepository.getCustomerID(myBankCustomer.getSocialNumber());
             myBankRepository.createAccount(accountNr, customerID);
-            return "Client and customer created";
+            System.out.println("Account and customer created");
         } else {
             int customerID = myBankRepository.getCustomerID(myBankCustomer.getSocialNumber());
             myBankRepository.createAccount(accountNr, customerID);
-            return "Account created ";
+            System.out.println("Account created ");
         }
     }
 
-    public String getBalance(String accountNr) {
+    public void getBalance(String accountNr) {
         int accountValidation = myBankRepository.validateAccount(accountNr);
-        if (accountValidation == 1) {
-            BigDecimal balance = myBankRepository.getBalance(accountNr);
-            return "Balance for account: " + accountNr + " : " + balance;
-        } else {
-            return noSuchAccount;
+        if (accountValidation == 0) {
+            throw new MyBankException("No such account number");
         }
+        BigDecimal balance = myBankRepository.getBalance(accountNr);
+        System.out.println("Balance for account: " + accountNr + " : " + balance);
     }
 
-    public String depositMoney(MyBankTransaction myBankTransaction) {
-        int accountValidation = myBankRepository.validateAccount(myBankTransaction.getAccountTo());
+    public void depositMoney(MyBankTransaction myBankTransaction) {
         boolean isPositive = isPositive(myBankTransaction.getSum());
-        if (accountValidation > 0 && isPositive) {
-            BigDecimal balance = myBankRepository.getBalance(myBankTransaction.getAccountTo());
-            BigDecimal newBalance = balance.add(myBankTransaction.getSum());
-            myBankRepository.updateBalance(myBankTransaction.getAccountTo(), newBalance);
-            myBankRepository.saveTransaction(myBankTransaction);
-            return "Transaction completed";
-        } else if (accountValidation > 0 && !isPositive) {
-            return haveToPositive;
-        } else {
-            return noSuchAccount;
+        if (!isPositive) {
+            throw new MyBankException(haveToPositive);
         }
+        int accountValidation = myBankRepository.validateAccount(myBankTransaction.getAccountTo());
+        if (accountValidation ==  0) {
+            throw new MyBankException(noSuchAccount);
+        }
+        myBankTransaction.setType("deposit");
+        BigDecimal balance = myBankRepository.getBalance(myBankTransaction.getAccountTo());
+        BigDecimal newBalance = balance.add(myBankTransaction.getSum());
+        myBankRepository.updateBalance(myBankTransaction.getAccountTo(), newBalance);
+        myBankRepository.saveTransaction(myBankTransaction);
+        System.out.println("Transaction complete");
     }
 
     public String withdrawMoney(MyBankTransaction myBankTransaction) {
-        int accountValidation = myBankRepository.validateAccount(myBankTransaction.getAccountFrom());
         boolean isSumPositive = isPositive(myBankTransaction.getSum());
-        if (accountValidation > 0 && isSumPositive) {
-            boolean isEnoughMoney = isEnoughMoney(myBankTransaction.getAccountFrom(), myBankTransaction.getSum());
-            if (isEnoughMoney) {
-                BigDecimal balance = myBankRepository.getBalance(myBankTransaction.getAccountFrom());
-                BigDecimal newBalance = balance.subtract(myBankTransaction.getSum());
-                myBankRepository.updateBalance(myBankTransaction.getAccountFrom(), newBalance);
-                myBankRepository.saveTransaction(myBankTransaction);
-                return "Transaction completed";
-            } else
-                return "Not enough money";
-        } else if (!isSumPositive) {
-            return haveToPositive;
-        } else {
-            return noSuchAccount;
+        if(!isSumPositive) {
+            throw new MyBankException(haveToPositive);
         }
+        int accountValidation = myBankRepository.validateAccount(myBankTransaction.getAccountFrom());
+        if (accountValidation == 0) {
+            throw new MyBankException(noSuchAccount);
+        }
+        boolean isEnoughMoney = isEnoughMoney(myBankTransaction.getAccountFrom(), myBankTransaction.getSum());
+        if (!isEnoughMoney) {
+            throw new MyBankException(notEnoughMoney);
+        }
+        myBankTransaction.setType("withdraw");
+        BigDecimal balance = myBankRepository.getBalance(myBankTransaction.getAccountFrom());
+        BigDecimal newBalance = balance.subtract(myBankTransaction.getSum());
+        myBankRepository.updateBalance(myBankTransaction.getAccountFrom(), newBalance);
+        myBankRepository.saveTransaction(myBankTransaction);
+        return "Transaction completed";
     }
 
     public String buildAccountNumber() {
@@ -108,28 +110,28 @@ public class MyBankServices {
     }
 
     public String transferMoney(MyBankTransaction myBankTransaction) {
+        boolean isSumPositive = isPositive(myBankTransaction.getSum());
+        if (!isSumPositive ) {
+            throw new MyBankException(haveToPositive);
+        }
         int accountFromValidation = myBankRepository.validateAccount(myBankTransaction.getAccountFrom());
         int accountToValidation = myBankRepository.validateAccount(myBankTransaction.getAccountTo());
-        boolean isSumPositive = isPositive(myBankTransaction.getSum());
-        if (accountFromValidation > 0 && accountToValidation > 0 && isSumPositive) {
-            Boolean isEnoughMoney = isEnoughMoney(myBankTransaction.getAccountFrom(), myBankTransaction.getSum());
-            if (isEnoughMoney) {
-                BigDecimal balanceFrom = myBankRepository.getBalance(myBankTransaction.getAccountFrom());
-                BigDecimal newBalanceFrom = balanceFrom.subtract(myBankTransaction.getSum());
-                BigDecimal balanceTo = myBankRepository.getBalance(myBankTransaction.getAccountTo());
-                BigDecimal newBalanceTo = balanceTo.add(myBankTransaction.getSum());
-                myBankRepository.updateBalance(myBankTransaction.getAccountFrom(), newBalanceFrom);
-                myBankRepository.updateBalance(myBankTransaction.getAccountTo(), newBalanceTo);
-                myBankRepository.saveTransaction(myBankTransaction);
-                return "Transfer Completed";
-            } else {
-                return "Not enough money";
-            }
-        } else if (!isSumPositive) {
-            return haveToPositive;
-        } else {
-            return "Account number wrong";
+        if (accountFromValidation == 0 || accountToValidation == 0) {
+            throw new MyBankException(noSuchAccount);
         }
+        Boolean isEnoughMoney = isEnoughMoney(myBankTransaction.getAccountFrom(), myBankTransaction.getSum());
+        if (!isEnoughMoney) {
+            throw new MyBankException(notEnoughMoney);
+        }
+        myBankTransaction.setType("transfer");
+        BigDecimal balanceFrom = myBankRepository.getBalance(myBankTransaction.getAccountFrom());
+        BigDecimal newBalanceFrom = balanceFrom.subtract(myBankTransaction.getSum());
+        BigDecimal balanceTo = myBankRepository.getBalance(myBankTransaction.getAccountTo());
+        BigDecimal newBalanceTo = balanceTo.add(myBankTransaction.getSum());
+        myBankRepository.updateBalance(myBankTransaction.getAccountFrom(), newBalanceFrom);
+        myBankRepository.updateBalance(myBankTransaction.getAccountTo(), newBalanceTo);
+        myBankRepository.saveTransaction(myBankTransaction);
+        return " Transaction compete";
     }
 
 
@@ -162,14 +164,16 @@ public class MyBankServices {
                 "<td><b>Date</b></td>" +
                 "<td><b>Account From</b></td>" +
                 "<td><b>Account To</b></td>" +
+                "<td><b>Type</b></td>" +
                 "<td><b>Sum</b></td>" +
                 "</tr>");
         for (MyBankTransaction transaction : allTransactions) {
             String row = "<tr>" +
                     "<td>" + transaction.getTransactionID() + "</td>" +
                     "<td>" + transaction.getDatetime() + "</td>" +
-                    "<td>" + transaction.getAccountFrom() + "</td>" +
-                    "<td>" + transaction.getAccountTo() + "</td>" +
+                    "<td>" + replaceBankAccount(transaction.getAccountFrom()) + "</td>" +
+                    "<td>" + replaceBankAccount(transaction.getAccountTo()) + "</td>" +
+                    "<td>" + transaction.getType() + "</td>" +
                     "<td>" + transaction.getSum() + "</td>" +
                     "</tr>";
             sb.append(row);
@@ -177,8 +181,18 @@ public class MyBankServices {
         return sb.toString();
     }
 
+    /**
+     * replace bank account with blank string on all transactions. Like deposit and withdraw.
+     */
+    public String replaceBankAccount(String account) {
+        if (account.equals("EE1")) {
+            account = "";
+            return account;
+        } else {
+            return account;
+        }
+    }
 }
-
 
 
 
