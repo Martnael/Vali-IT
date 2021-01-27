@@ -1,6 +1,7 @@
 package ee.bcs.valiit.tasks;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -73,7 +74,11 @@ public class MyBankRepository {
         String sql = "SELECT balance FROM account WHERE account_nr = :account_nr";
         Map<String, String> paraMap = new HashMap<>();
         paraMap.put("account_nr", accountNr);
-        return template.queryForObject(sql, paraMap, BigDecimal.class);
+        try {
+            return template.queryForObject(sql, paraMap, BigDecimal.class);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public void updateBalance (String accountNr, BigDecimal newBalance) {

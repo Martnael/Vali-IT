@@ -13,7 +13,7 @@ public class MyBankTransactionRowMapper implements RowMapper<MyBankTransaction>{
         transaction.setAccountTo(resultSet.getString("account_nr_to"));
         transaction.setDatetime(resultSet.getString("date_time"));
         transaction.setSum(resultSet.getBigDecimal("sum"));
-        transaction.setType(resultSet.getString("type"));
+        transaction.setType(resultSet.getInt("type"));
         transaction.setTransactionID(resultSet.getInt("transfer_id"));
         return transaction;
     }

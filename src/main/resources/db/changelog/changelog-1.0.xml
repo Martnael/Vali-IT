@@ -25,7 +25,7 @@
 
     <changeSet id="2021-01-26 bank v.1" author="Mart Nael">
         <createTable tableName="customer">
-            <column name="user_id" type="int" autoIncrement="true" >
+            <column name="user_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="text"/>
@@ -33,7 +33,7 @@
         </createTable>
 
         <createTable tableName="account">
-            <column name="account_id" type="int" autoIncrement="true" >
+            <column name="account_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="account_nr" type="text"/>
@@ -44,7 +44,7 @@
         </createTable>
 
         <createTable tableName="transaction">
-            <column name="transfer_id" type="int" autoIncrement="true" >
+            <column name="transfer_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="account_from" type="int">
@@ -57,5 +57,20 @@
             <column name="sum" type="numeric"/>
             <column name="date_time" type="text"/>
         </createTable>
+    </changeSet>
+    <changeSet id="2021-01-27 bank v.2" author="Mart Nael">
+        <createTable tableName="type">
+            <column name="type_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="type_name" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2021-01-27 bank v.2.1" author="Mart Nael">
+    <modifyDataType tableName="transaction" columnName="type" newDataType="int"/>
+    </changeSet>
+    <changeSet id="2021-01-27 bank v.2.2" author="Mart Nael">
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="type" constraintName="trasnaction_to_type" referencedTableName="type"
+                                 referencedColumnNames="type_id"/>
     </changeSet>
 </databaseChangeLog>

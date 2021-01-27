@@ -1,9 +1,6 @@
 package ee.bcs.valiit.controller;
 
-import ee.bcs.valiit.tasks.MyBankCustomer;
-import ee.bcs.valiit.tasks.MyBankException;
-import ee.bcs.valiit.tasks.MyBankServices;
-import ee.bcs.valiit.tasks.MyBankTransaction;
+import ee.bcs.valiit.tasks.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,5 +56,15 @@ public class MyBankController {
     @GetMapping("/alltransactions")
     public String allTransactions () {
         return myBankServices.printAllTransfers();
+    }
+
+    @GetMapping("/oneaccount")
+    public String getAccounts(@RequestParam("nr") int nr) {
+        return myBankServices.getAccount(nr);
+    }
+
+    @GetMapping("/oneowner")
+    public String oneOwner(@RequestParam("nr") int nr) {
+        return myBankServices.ownerAccounts(nr);
     }
 }

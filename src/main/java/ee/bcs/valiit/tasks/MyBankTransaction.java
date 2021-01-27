@@ -8,14 +8,14 @@ public class MyBankTransaction {
     String accountFrom ="EE1";
     String accountTo ="EE1";
     BigDecimal sum = BigDecimal.ZERO;
-    String type = " ";
+    int type;
     String Datetime = LocalDateTime.now().toString();
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

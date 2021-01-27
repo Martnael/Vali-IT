@@ -1,8 +1,10 @@
 package ee.bcs.valiit.tasks;
 
+import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -43,11 +45,10 @@ public class MyBankServices {
     }
 
     public void getBalance(String accountNr) {
-        int accountValidation = myBankRepository.validateAccount(accountNr);
-        if (accountValidation == 0) {
+        BigDecimal balance = myBankRepository.getBalance(accountNr);
+        if (balance == null) {
             throw new MyBankException("No such account number");
         }
-        BigDecimal balance = myBankRepository.getBalance(accountNr);
         System.out.println("Balance for account: " + accountNr + " : " + balance);
     }
 
@@ -60,7 +61,7 @@ public class MyBankServices {
         if (accountValidation ==  0) {
             throw new MyBankException(noSuchAccount);
         }
-        myBankTransaction.setType("deposit");
+        myBankTransaction.setType(1);
         BigDecimal balance = myBankRepository.getBalance(myBankTransaction.getAccountTo());
         BigDecimal newBalance = balance.add(myBankTransaction.getSum());
         myBankRepository.updateBalance(myBankTransaction.getAccountTo(), newBalance);
@@ -81,7 +82,7 @@ public class MyBankServices {
         if (!isEnoughMoney) {
             throw new MyBankException(notEnoughMoney);
         }
-        myBankTransaction.setType("withdraw");
+        myBankTransaction.setType(2);
         BigDecimal balance = myBankRepository.getBalance(myBankTransaction.getAccountFrom());
         BigDecimal newBalance = balance.subtract(myBankTransaction.getSum());
         myBankRepository.updateBalance(myBankTransaction.getAccountFrom(), newBalance);
@@ -109,6 +110,7 @@ public class MyBankServices {
         return balance.compareTo(sum) >= 0;
     }
 
+    @Transactional
     public String transferMoney(MyBankTransaction myBankTransaction) {
         boolean isSumPositive = isPositive(myBankTransaction.getSum());
         if (!isSumPositive ) {
@@ -123,7 +125,7 @@ public class MyBankServices {
         if (!isEnoughMoney) {
             throw new MyBankException(notEnoughMoney);
         }
-        myBankTransaction.setType("transfer");
+        myBankTransaction.setType(3);
         BigDecimal balanceFrom = myBankRepository.getBalance(myBankTransaction.getAccountFrom());
         BigDecimal newBalanceFrom = balanceFrom.subtract(myBankTransaction.getSum());
         BigDecimal balanceTo = myBankRepository.getBalance(myBankTransaction.getAccountTo());
@@ -192,6 +194,50 @@ public class MyBankServices {
             return account;
         }
     }
+
+    @Autowired
+    private MyBankTwoRepository hibernateRepository;
+
+//  TODO: Throws exceptions puua kinni
+
+    public String getAccount (int nr) {
+        MyBankAccountTwo account = hibernateRepository.getOne(nr);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
+                "<tr>" +
+                "<td><b>Account ID</b></td>" +
+                "<td>"+ account.getId() +"</td>" +
+                "</tr>" +
+                "<td><b>Account NR</b></td>" +
+                "<td>"+ account.getAccountNumber() +"</td>" +
+                "</tr>" +
+                "<td><b>Account owner</b></td>" +
+                "<td>"+ account.getOwnerNr() +"</td>" +
+                "</tr>" +
+                "<td><b>Balance</b></td>" +
+                "<td>"+ account.getAccountBalance() +"</td>" +
+                "</tr>");
+        return sb.toString();
+    }
+
+    public String ownerAccounts(int nr) {
+        List<MyBankAccountTwo> accounts = hibernateRepository.findMyBankAccountTwoByOwnerNr(nr);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<b>Owner number: " + accounts.get(0).getOwnerNr() + "</b><br>");
+        sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
+                "<tr>" +
+                "<td><b>Account</b></td>" +
+                "<td><b>Balance</b></td>" +
+                "</tr>");
+        for (MyBankAccountTwo account : accounts) {
+            sb.append("<tr>" +
+                        "<td>" + account.getAccountNumber() + "</td>" +
+                        "<td>" + account.getAccountBalance() + "</td>" +
+                    "</tr>");
+        }
+        return sb.toString();
+    }
+
 }
 
 
