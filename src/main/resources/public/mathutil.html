@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mart Bank</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sidenav">
+    <ul>
+        <a href="www.google.com">Create account</a>
+        <a href="www.google.com">Deposit money</a>
+        <a href="www.google.com">Withdraw money</a>
+        <a href="www.google.com">Transfer money</a>
+        <a href="mathutil.html">Math Util</a>
+        <a href="logout.php" ID="logout">Logout</a>
+    </ul>
+</div>
+<div id="math">
+    <p><b>Min value</b></p>
+    a: <input id="min_a"/> <br>
+    b: <input id="min_b"/> <br>
+    <button id="min_button" type="button">Calculate Min</button><br>
+    vastus: <input id="min_value" disabled/>
+
+    <p><b>Max value</b></p>
+    a: <input id="max_a"/> <br>
+    b: <input id="max_b"/> <br>
+    <button id="max_button" type="button">Calculate max</button><br>
+    vastus: <input id="max_value" disabled/>
+
+    <p><b>Abs value</b></p>
+    a: <input id="abs"/> <br>
+    <button id="abs_button" type="button">Abs Value</button><br>
+    vastus: <input id="abs_value" disabled/>
+
+    <p><b>Is even</b></p>
+    a: <input id="is_even"/> <br>
+    <button id="even_button" type="button">is Even??</button><br>
+    vastus: <input id="even_value" disabled/>
+
+    <script>
+        let min_a = document.getElementById("min_a");
+        let min_b = document.getElementById("min_b");
+        let min_answer = document.getElementById("min_value");
+        function pressMinButton () {
+            if (min_a.value < min_b.value) {
+                min_answer.value = min_a.value;
+            } else {
+                min_answer.value = min_b.value;
+            }
+        }
+        let element = document.getElementById("min_button");
+        element.addEventListener("click", pressMinButton);
+
+        let max_a = document.getElementById("max_a");
+        let max_b = document.getElementById("max_b");
+        let max_answer = document.getElementById("max_value");
+        function pressMaxButton () {
+            if (max_a.value > max_b.value) {
+                max_answer.value = max_a.value;
+            } else {
+                max_answer.value = max_b.value;
+            }
+        }
+        let element2 = document.getElementById("max_button");
+        element2.addEventListener("click", pressMaxButton);
+
+        let abs = document.getElementById("abs");
+        let abs_answer = document.getElementById("abs_value");
+        function pressAbsButton () {
+            if(abs.value >= 0) {
+                abs_answer.value = abs.value;
+            } else {
+                abs_answer.value = 0 - abs.value;
+            }
+        }
+        let element3 = document.getElementById("abs_button")
+        element3.addEventListener("click", pressAbsButton)
+
+        let even = document.getElementById("is_even");
+        let even_answer= document.getElementById("even_value");
+        function pressEvenButton () {
+            if (even.value % 2 === 0) {
+               even_answer.value = true;
+            } else {
+                even_answer.value = false;
+            }
+        }
+        let element4 = document.getElementById("even_button")
+        element4.addEventListener("click", pressEvenButton)
+
+    </script>
+</div>
+</body>
+</html>

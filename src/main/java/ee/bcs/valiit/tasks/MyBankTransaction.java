@@ -9,6 +9,7 @@ public class MyBankTransaction {
     String accountTo ="EE1";
     BigDecimal sum = BigDecimal.ZERO;
     int type;
+    String typeName;
     String Datetime = LocalDateTime.now().toString();
 
     public int getType() {
@@ -57,5 +58,13 @@ public class MyBankTransaction {
 
     public void setTransactionID(int transactionID) {
         this.transactionID = transactionID;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

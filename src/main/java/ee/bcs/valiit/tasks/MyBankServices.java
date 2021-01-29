@@ -240,14 +240,42 @@ public class MyBankServices {
     @Autowired
     private MyBankEntityTransactionRepository hibernateTransactionRepository;
 
+    public MyBankTransaction mapTransaction (MyBankEntityTransaction transaction) {
+        MyBankTransaction mappedTransaction = new MyBankTransaction();
+        mappedTransaction.setTransactionID(transaction.getTransferId());
+        mappedTransaction.setAccountFrom(transaction.getAccountFrom().getAccountNumber());
+        mappedTransaction.setAccountTo(transaction.getAccountTo().getAccountNumber());
+        mappedTransaction.setTypeName(transaction.getType().getTypeName());
+        mappedTransaction.setSum(transaction.getSum());
+        mappedTransaction.setDatetime(transaction.getDateTime());
+        return mappedTransaction;
+    }
+
+
+
     public String oneTransaction (int transactionId) {
         MyBankEntityTransaction transaction = hibernateTransactionRepository.getOne(transactionId);
-        return "Id: "+ transaction.getTransferId() + "<br>"
-                + "Account From: " + transaction.getAccountFrom().getAccountNumber() + "<br>"
-                + "Account To: " + transaction.getAccountTo().getAccountNumber() + "<br>"
-                + "Type: " + transaction.getType().getTypeName()
-                ;
+        MyBankTransaction mapTransaction = mapTransaction(transaction);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
+                "<tr>" +
+                "<td><b>Transaction ID</b></td>" +
+                "<td><b>Account From</b></td>" +
+                "<td><b>Account To</b></td>" +
+                "<td><b>Sum</b></td>" +
+                "<td><b>Type</b></td>" +
+                "<td><b>Date Time</b></td>" +
+                "</tr>" +
+                "<td>" + mapTransaction.getTransactionID() + "</td>" +
+                "<td>" + mapTransaction.getAccountFrom() + "</td>" +
+                "<td>" + mapTransaction.getAccountTo() + "</td>" +
+                "<td>" + mapTransaction.getSum() + "</td>" +
+                "<td>" + mapTransaction.getTypeName() + "</td>" +
+                "<td>" + mapTransaction.getDatetime() + "</td>");
+        return sb.toString();
     }
+
+
 
 }
 
