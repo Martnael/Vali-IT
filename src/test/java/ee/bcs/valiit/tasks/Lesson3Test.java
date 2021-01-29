@@ -41,6 +41,10 @@ class Lesson3Test {
 
     @Test
     void sort() {
+        int[] test = {20, 37, 15, 21};
+        int[] actual = Lesson3.sort(test);
+        int[] expected = {15, 20, 21, 37};
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -53,5 +57,12 @@ class Lesson3Test {
 
     @Test
     void isPrime() {
+        boolean[] actual = {true, true, false, false};
+        boolean[] expected = new boolean[4];
+        int[] test = {2,11, 6, 10};
+        for( int i = 0; i < actual.length; i++) {
+            expected[i] = Lesson3.isPrime(test[i]) ;
+        }
+        assertArrayEquals(actual, expected);
     }
 }

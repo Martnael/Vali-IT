@@ -12,9 +12,10 @@ public class MyBankErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MyBankErrorResponse> handleError(Exception ex) {
+        ex.printStackTrace();
         MyBankErrorResponse error = new MyBankErrorResponse();
         error.setMessage("FATAL ERROR");
-        return new ResponseEntity<>(error, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MyBankException.class)

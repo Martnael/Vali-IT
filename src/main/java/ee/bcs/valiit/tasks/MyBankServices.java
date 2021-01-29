@@ -1,6 +1,5 @@
 package ee.bcs.valiit.tasks;
 
-import com.sun.xml.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +43,12 @@ public class MyBankServices {
         }
     }
 
-    public void getBalance(String accountNr) {
+    public String getBalance(String accountNr) {
         BigDecimal balance = myBankRepository.getBalance(accountNr);
         if (balance == null) {
             throw new MyBankException("No such account number");
         }
-        System.out.println("Balance for account: " + accountNr + " : " + balance);
+        return "Balance for account: " + accountNr + " : " + balance;
     }
 
     public void depositMoney(MyBankTransaction myBankTransaction) {
@@ -196,12 +195,12 @@ public class MyBankServices {
     }
 
     @Autowired
-    private MyBankTwoRepository hibernateRepository;
+    private MyBankEntityAccountRepository hibernateRepository;
 
 //  TODO: Throws exceptions puua kinni
 
     public String getAccount (int nr) {
-        MyBankAccountTwo account = hibernateRepository.getOne(nr);
+        MyBankEntityAccount account = hibernateRepository.getOne(nr);
         StringBuilder sb = new StringBuilder();
         sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
                 "<tr>" +
@@ -212,7 +211,7 @@ public class MyBankServices {
                 "<td>"+ account.getAccountNumber() +"</td>" +
                 "</tr>" +
                 "<td><b>Account owner</b></td>" +
-                "<td>"+ account.getOwnerNr() +"</td>" +
+                "<td>"+ account.getCustomer().getName() +"</td>" +
                 "</tr>" +
                 "<td><b>Balance</b></td>" +
                 "<td>"+ account.getAccountBalance() +"</td>" +
@@ -220,22 +219,34 @@ public class MyBankServices {
         return sb.toString();
     }
 
-    public String ownerAccounts(int nr) {
-        List<MyBankAccountTwo> accounts = hibernateRepository.findMyBankAccountTwoByOwnerNr(nr);
+    public String ownerAccounts(String name) {
+        List<MyBankEntityAccount> accounts = hibernateRepository.findAllByCustomer_Name(name);
         StringBuilder sb = new StringBuilder();
-        sb.append("<b>Owner number: " + accounts.get(0).getOwnerNr() + "</b><br>");
+        sb.append("<b>Owner number: " + accounts.get(0).getCustomer().getName() + "</b><br>");
         sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
                 "<tr>" +
                 "<td><b>Account</b></td>" +
                 "<td><b>Balance</b></td>" +
                 "</tr>");
-        for (MyBankAccountTwo account : accounts) {
+        for (MyBankEntityAccount account : accounts) {
             sb.append("<tr>" +
                         "<td>" + account.getAccountNumber() + "</td>" +
                         "<td>" + account.getAccountBalance() + "</td>" +
                     "</tr>");
         }
         return sb.toString();
+    }
+
+    @Autowired
+    private MyBankEntityTransactionRepository hibernateTransactionRepository;
+
+    public String oneTransaction (int transactionId) {
+        MyBankEntityTransaction transaction = hibernateTransactionRepository.getOne(transactionId);
+        return "Id: "+ transaction.getTransferId() + "<br>"
+                + "Account From: " + transaction.getAccountFrom().getAccountNumber() + "<br>"
+                + "Account To: " + transaction.getAccountTo().getAccountNumber() + "<br>"
+                + "Type: " + transaction.getType().getTypeName()
+                ;
     }
 
 }

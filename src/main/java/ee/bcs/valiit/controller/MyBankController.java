@@ -24,16 +24,16 @@ public class MyBankController {
     }
 
     @GetMapping("getbalance")
-    public void getBalance(@RequestParam("accountnr") String accountNr) {
-        myBankServices.getBalance(accountNr);
+    public String getBalance(@RequestParam("accountnr") String accountNr) {
+        return myBankServices.getBalance(accountNr);
     }
 
-    @PostMapping("depositmoney")
+    @PutMapping("depositmoney")
     public void depositMoney(@RequestBody MyBankTransaction myBankTransaction) {
         myBankServices.depositMoney(myBankTransaction);
     }
 
-    @PostMapping("withdrawmoney")
+    @PutMapping("withdrawmoney")
     public String withdrawMoney(@RequestBody MyBankTransaction myBankTransaction) {
         return myBankServices.withdrawMoney(myBankTransaction);
     }
@@ -64,7 +64,13 @@ public class MyBankController {
     }
 
     @GetMapping("/oneowner")
-    public String oneOwner(@RequestParam("nr") int nr) {
-        return myBankServices.ownerAccounts(nr);
+    public String oneOwner(@RequestParam("name") String name) {
+        return myBankServices.ownerAccounts(name);
     }
+
+    @GetMapping("/onetransaction")
+    public String oneTransaction(@RequestParam("nr") int nr) {
+        return myBankServices.oneTransaction(nr);
+    }
+
 }
