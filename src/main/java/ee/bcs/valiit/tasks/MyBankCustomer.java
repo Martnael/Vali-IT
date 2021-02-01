@@ -6,6 +6,7 @@ public class MyBankCustomer {
 
     private String customerName;
     private String socialNumber;
+    private String password;
 
     public int getId() {
         return Id;
@@ -29,5 +30,13 @@ public class MyBankCustomer {
 
     public void setSocialNumber(String socialNumber) {
         this.socialNumber = socialNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

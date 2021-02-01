@@ -8,6 +8,10 @@ body{
     height: 100vh;
 }
 
+/*#form {*/
+/*    display: block;*/
+/*}*/
+
 #logo{
     color: white;
     text-align: center;
@@ -90,7 +94,7 @@ img {
     border-color:#6fd653;
 }
 
-.create-box input[type="submit"]{
+.create-box input[type="button"]{
     width: 40%;
     border: none;
     outline: none;
@@ -104,12 +108,12 @@ img {
     margin-bottom: 20px;
 }
 
-.create-box input[type="submit"]:hover{
+.create-box input[type="button"]:hover{
     background:#6FD653;
     transition: .2s;
 }
 
-.create-box input[type="submit"]:focus{
+.create-box input[type="button"]:focus{
     transform: scaleX(1.1);
 }
 

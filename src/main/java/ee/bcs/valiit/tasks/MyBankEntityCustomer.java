@@ -14,6 +14,7 @@ public class MyBankEntityCustomer {
     private String name;
 
     private String socialNumber;
+    private String password;
 
     @OneToMany(mappedBy = "customer")
     private List<MyBankEntityAccount> accounts;
@@ -50,5 +51,11 @@ public class MyBankEntityCustomer {
         this.accounts = accounts;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

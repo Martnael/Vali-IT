@@ -9,17 +9,58 @@
 <div class="sidenav">
     <h1 id="logo"> MyBank </h1>
     <ul>
-        <a href="createaccount.html">Create account</a>
     </ul>
 </div>
 <div class="login-box">
     <h1>login</h1>
-    <form action="#">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Log in">
+    <form>
+        <input type="text" name="username" id = "username" placeholder="Username">
+        <input type="password" name="password" id = "password" placeholder="Password">
+        <input type="button" id="submit" value="Log in">
     </form>
-    <a href="#">Forget Password</a>
+    <a href="create.html">Create Account</a><br>
+    <a href="www.google.com">Forget Password</a>
 </div>
+    <script>
+
+        let nameLogin = document.getElementById("username");
+        let passwordLogin = document.getElementById("password");
+
+        function checkUser() {
+            if (nameLogin.value.length === 0) {
+                return alert("All fields have to be filled !!!");
+            }
+            if (passwordLogin.value.length === 0) {
+                return alert("All fields have to be filled !!!");
+            }
+
+            let customer = {
+                customerName: nameLogin.value,
+                password: passwordLogin.value
+            }
+
+            let postUrl = '/solutions/bank/login';
+            fetch(postUrl,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(customer)
+                })
+                .then(res => res.json())
+                .then(function (res) {
+                    if (res.customerId === 0) {
+                        alert(res.answer);
+                    } else {
+                        let url = '/menu.html?id=' + res.customerId;
+                        window.location.replace(url);
+                    }})
+        }
+
+        let loginButton = document.getElementById("submit");
+        loginButton.addEventListener("click", checkUser);
+
+    </script>
 </body>
 </html>

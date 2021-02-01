@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mart Bank</title>
+    <link type="text/css" rel="stylesheet" href="menu.css">
+</head>
+<body>
+    <div id="header">
+    </div>
+    <div class="sidenav">
+        <h1 id="logo"> MyBank </h1>
+        <ul>
+            <div class="btn-group">
+                <button class="button">Create Account</button>
+                <button class="button">Accounts Overview</button>
+                <button class="button">Transfers</button>
+            </div>
+
+        </ul>
+        <ul>
+            <div class="btn-group">
+                <button class="button">Deposit money</button>
+                <button class="button">Withdraw money</button>
+                <button class="button">Transfer money</button>
+            </div>
+        </ul>
+        <a href="index.html" id="logout">Log Out </a>
+    </div>
+
+    <div id = "accounts">
+    </div>
+
+    <div id = "transfers">
+    </div>
+
+
+
+
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    let customerId = urlParams.get('id')
+
+    window.onload = function getName() {
+
+        let getUrl = '/solutions/bank/getname?id='+ customerId;
+        fetch(getUrl,
+            {
+                method: 'GET',
+            })
+            .then(res=>res.json())
+            .then(function (res) {
+                document.getElementById("header").innerHTML =
+                    'Hello ' + res.answer;
+            });
+    }
+
+    function getAccounts () {
+        let getURl = '/solutions/bank/customeraccounts?id=' + customerId;
+        fetch(getUrl,
+            {
+                method: 'GET',
+            })
+            .then(res=>res.json())
+            .then(function (res) {
+                document.getElementById("header").innerHTML =
+                    'Hello ' + res.answer;
+            });
+    }
+
+
+
+
+</script>
+</body>
+</html>

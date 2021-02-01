@@ -73,4 +73,9 @@
         <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="type" constraintName="trasnaction_to_type" referencedTableName="type"
                                  referencedColumnNames="type_id"/>
     </changeSet>
+    <changeSet id="2021-01-30 bank v.2.3" author="Mart Nael">
+        <addColumn tableName="customer">
+            <column name="password" type="text"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

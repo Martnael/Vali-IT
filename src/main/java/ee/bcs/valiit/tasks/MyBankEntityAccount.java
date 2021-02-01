@@ -76,4 +76,5 @@ public class MyBankEntityAccount {
     public void setAccountTo(List<MyBankEntityTransaction> accountTo) {
         this.accountTo = accountTo;
     }
+
 }

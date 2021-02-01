@@ -90,7 +90,7 @@ img {
     border-color:#6fd653;
 }
 
-.login-box input[type="submit"]{
+.login-box input[type="button"]{
     width: 40%;
     border: none;
     outline: none;
@@ -104,12 +104,12 @@ img {
     margin-bottom: 20px;
 }
 
-.login-box input[type="submit"]:hover{
+.login-box input[type="button"]:hover{
     background:#6FD653;
     transition: .2s;
 }
 
-.login-box input[type="submit"]:focus{
+.login-box input[type="button"]:focus{
     transform: scaleX(1.1);
 }
 

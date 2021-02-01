@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyBank</title>
+    <link type="text/css" rel="stylesheet" href="createaccount.css">
+</head>
+<body>
+<div class="sidenav">
+    <h1 id="logo"> MyBank </h1>
+    <ul>
+    </ul>
+  </div>
+  <div id="answer">
+  </div>
+  <div id="box" class="create-box">
+      <h1>Creat account</h1>
+      <form id = "form">
+          <input type="text" id="name" name="name" placeholder="Name">
+          <input type="text" id="social_number" name="social_number" placeholder="Social Number">
+          <input type="password" id="password" name="password" placeholder="Password">
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
+          <input type="button" id="create" value="create">
+      </form>
+      <a href="index.html">Back</a>
+  </div>
+      <script>
+
+          let name = document.getElementById("name");
+          let socialNumbers = document.getElementById("social_number");
+          let password = document.getElementById("password");
+          let confirmPassword = document.getElementById("confirm_password");
+
+          function closeBox() {
+              let x = document.getElementById("box");
+              if (x.style.display === "none") {
+                  x.style.display = "block";
+              } else {
+                  x.style.display = "none";
+              }
+          }
+
+          function checkInformation() {
+              if (name.value.length === 0 ) {
+                  return alert ("All fields have to be filled !!!")
+              }
+              if (socialNumbers.value.length !== 11 ) {
+                  return alert ("Social number have to be 11 character long")
+              }
+              if (isNaN(socialNumbers.value)) {
+                  return alert ("Social number should be numeric")
+              }
+              if (password.value !== confirmPassword.value) {
+                  return alert("Password have to same");
+              }
+              let customer = {
+                  customerName: name.value,
+                  socialNumber: socialNumbers.value,
+                  password: password.value
+              }
+
+
+              let postUrl = '/solutions/bank/createaccount';
+              fetch(postUrl,
+                  {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(customer)
+                  })
+                  .then(res=>res.json())
+                  .then(function (res) {
+                      document.getElementById("answer").innerHTML =
+                          '<div id = "answer2">'
+                             + res.answer +
+                          '</div>'
+                  })
+                .then(closeBox)
+              ;
+
+          }
+
+          let element = document.getElementById("create");
+          element.addEventListener("click", checkInformation);
+      </script>
+</body>
+  </html>

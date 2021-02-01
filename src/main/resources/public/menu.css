@@ -1,0 +1,98 @@
+body{
+    margin: 0;
+    padding: 0;
+    background:#156DA9;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100vh;
+}
+
+#logo{
+    color: white;
+    text-align: center;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+ul{
+    text-align: center;
+}
+
+.sidenav {
+    height: 100%;
+    width: 15%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #535353;
+    overflow-x: hidden;
+    padding-top: 20px;
+    border-radius: 5px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+}
+
+#logout {
+    color: darkblue;
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    font-size: small;
+
+}
+
+#header {
+    position:fixed;
+    top: 0;
+    width: 100%;
+    padding: 30px;
+    text-align: center;
+    background: #535353;
+    color: white;
+    font-size: 20px;
+}
+
+.btn-group .button {
+    background-color: #4CAF50;
+    border: 1px solid green;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    width: 225px;
+    display: block;
+    border-radius: 12px;
+}
+
+.btn-group .button:not(:last-child) {
+    border-bottom: none;
+}
+
+.btn-group .button:hover {
+    background-color: #3e8e41;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+#top_row {
+    background-color: darkgray;
+    font-weight: bold;
+}
+tr, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+

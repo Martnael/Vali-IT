@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,18 +29,22 @@ public class MyBankServices {
 
     }
 
-    public void createAccount(MyBankCustomer myBankCustomer) {
+    public MyBankResponse createAccount(MyBankCustomer myBankCustomer) {
         int validation = myBankRepository.validateCustomer(myBankCustomer.getSocialNumber());
         String accountNr = buildAccountNumber();
+        MyBankResponse response = new MyBankResponse();
         if (validation == 0) {
             myBankRepository.createCustomer(myBankCustomer);
             int customerID = myBankRepository.getCustomerID(myBankCustomer.getSocialNumber());
-            myBankRepository.createAccount(accountNr, customerID);
-            System.out.println("Account and customer created");
+//            myBankRepository.createAccount(accountNr, customerID);
+            response.setAnswer("Account created. Please return to back and log in" + "<a href=\"index.html\">Back</a>");
+            return response;
         } else {
-            int customerID = myBankRepository.getCustomerID(myBankCustomer.getSocialNumber());
-            myBankRepository.createAccount(accountNr, customerID);
-            System.out.println("Account created ");
+            response.setAnswer("Client have already account. Please return to back and log in" + "<a href=\"index.html\">Back</a>");
+            return response;
+//            int customerID = myBankRepository.getCustomerID(myBankCustomer.getSocialNumber());
+//            myBankRepository.createAccount(accountNr, customerID);
+//            System.out.println("Account created ");
         }
     }
 
@@ -219,22 +224,19 @@ public class MyBankServices {
         return sb.toString();
     }
 
-    public String ownerAccounts(String name) {
-        List<MyBankEntityAccount> accounts = hibernateRepository.findAllByCustomer_Name(name);
-        StringBuilder sb = new StringBuilder();
-        sb.append("<b>Owner number: " + accounts.get(0).getCustomer().getName() + "</b><br>");
-        sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
-                "<tr>" +
-                "<td><b>Account</b></td>" +
-                "<td><b>Balance</b></td>" +
-                "</tr>");
+    @Autowired
+    private MyBankEntityAccountRepository hibernateAccountRepository;
+
+    public List<MyBankAccount> ownerAccounts(int customerId) {
+        List<MyBankAccount> customerAccounts = new ArrayList<>();
+        List<MyBankEntityAccount> accounts = hibernateAccountRepository.findByCustomer_UserId(customerId);
         for (MyBankEntityAccount account : accounts) {
-            sb.append("<tr>" +
-                        "<td>" + account.getAccountNumber() + "</td>" +
-                        "<td>" + account.getAccountBalance() + "</td>" +
-                    "</tr>");
+            MyBankAccount customerAccount = new MyBankAccount();
+            customerAccount.setAccountNumber(account.getAccountNumber());
+            customerAccount.setAccountBalance(account.getAccountBalance());
+            customerAccounts.add(customerAccount);
         }
-        return sb.toString();
+        return customerAccounts;
     }
 
     @Autowired
@@ -275,8 +277,48 @@ public class MyBankServices {
         return sb.toString();
     }
 
+    @Autowired
+    private MyBankEntityCustomerRespository hibernateCustomerResporitory;
 
+    private MyBankCustomer mapCustomer(MyBankEntityCustomer entityCustomer) {
+        MyBankCustomer customer = new MyBankCustomer();
+        customer.setId(entityCustomer.getUserId());
+        customer.setCustomerName(entityCustomer.getName());
+        customer.setPassword(entityCustomer.getPassword());
+        customer.setSocialNumber(entityCustomer.getSocialNumber());
+        return customer;
+    }
 
+    public MyBankResponse logIn(MyBankCustomer myBankCustomerLogIn) {
+        MyBankResponse myBankResponse = new MyBankResponse();
+        try {
+            MyBankEntityCustomer customer = hibernateCustomerResporitory.findByName(myBankCustomerLogIn.getCustomerName());
+            MyBankCustomer fromDbCustomer = mapCustomer(customer);
+            if (fromDbCustomer.getPassword().equals(myBankCustomerLogIn.getPassword())) {
+                myBankResponse.setAnswer("Login success");
+                myBankResponse.setCustomerId(fromDbCustomer.getId());
+            } else {
+                myBankResponse.setAnswer("Password or Username wrong");
+            }
+            return myBankResponse;
+        }   catch (Exception e) {
+                myBankResponse.setAnswer("Password or Username wrong");
+        }
+        return myBankResponse;
+    }
+
+    public MyBankResponse getName(int customerId) {
+        MyBankResponse answer = new MyBankResponse();
+        try {
+            MyBankEntityCustomer customer = hibernateCustomerResporitory.getOne(customerId);
+            MyBankCustomer actualcustomer = mapCustomer(customer);
+            answer.setAnswer(actualcustomer.getCustomerName());
+            return answer;
+        } catch (Exception e) {
+            answer.setAnswer("Something went wrong");
+        }
+        return answer;
+    }
 }
 
 

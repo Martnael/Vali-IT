@@ -4,6 +4,8 @@ import ee.bcs.valiit.tasks.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RequestMapping("solutions/bank")
 @RestController
@@ -13,14 +15,24 @@ public class MyBankController {
     @Autowired
     private MyBankServices myBankServices;
 
-    @GetMapping("/menu")
-    public String menu() {
-        return MyBankServices.menu();
-    }
+//    @GetMapping("/menu")
+//    public String menu() {
+//        return MyBankServices.menu();
+//    }
 
     @PostMapping("createaccount")
-    public void createAccount(@RequestBody MyBankCustomer myBankCustomer) {
-        myBankServices.createAccount(myBankCustomer);
+    public MyBankResponse createAccount(@RequestBody MyBankCustomer myBankCustomer) {
+        return myBankServices.createAccount(myBankCustomer);
+    }
+
+    @PostMapping("login")
+    public MyBankResponse logIn (@RequestBody MyBankCustomer myBankCustomer) {
+        return myBankServices.logIn(myBankCustomer);
+    }
+
+    @GetMapping("getname")
+    public MyBankResponse getName(@RequestParam("id") int customerId) {
+        return myBankServices.getName(customerId);
     }
 
     @GetMapping("getbalance")
@@ -43,6 +55,11 @@ public class MyBankController {
         return myBankServices.transferMoney(myBankTransaction);
     }
 
+    @GetMapping("customeraccounts")
+    public List<MyBankAccount> ownerAccount(@RequestParam("id") int customerId) {
+        return myBankServices.ownerAccounts(customerId);
+    }
+
     @GetMapping("/allaccounts")
     public String allAccount() {
         return myBankServices.printAccounts();
@@ -63,10 +80,6 @@ public class MyBankController {
         return myBankServices.getAccount(nr);
     }
 
-    @GetMapping("/oneowner")
-    public String oneOwner(@RequestParam("name") String name) {
-        return myBankServices.ownerAccounts(name);
-    }
 
     @GetMapping("/onetransaction")
     public String oneTransaction(@RequestParam("nr") int nr) {
