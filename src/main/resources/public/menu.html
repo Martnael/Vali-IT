@@ -12,65 +12,230 @@
         <h1 id="logo"> MyBank </h1>
         <ul>
             <div class="btn-group">
-                <button class="button">Create Account</button>
-                <button class="button">Accounts Overview</button>
-                <button class="button">Transfers</button>
+                <button class="button" id="createcustomer">Create Customer</button>
+                <button class="button" id="createaccount">Create Account</button>
+                <button class="button" id="overview">Accounts Overview</button>
+                <button class="button" id="alltransfers">Transfers</button>
             </div>
 
         </ul>
         <ul>
             <div class="btn-group">
-                <button class="button">Deposit money</button>
-                <button class="button">Withdraw money</button>
-                <button class="button">Transfer money</button>
+                <button class="button" id="depositmoney">Deposit money</button>
+                <button class="button" id="withdrawmoney">Withdraw money</button>
+                <button class="button" id="transfermoney">Transfer money</button>
             </div>
         </ul>
         <a href="index.html" id="logout">Log Out </a>
     </div>
 
-    <div id = "accounts">
+    <div id = "info">
     </div>
-
-    <div id = "transfers">
-    </div>
-
-
-
 
 <script>
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    let customerId = urlParams.get('id')
+    // const queryString = window.location.search;
+    // const urlParams = new URLSearchParams(queryString);
+    // let customerId = urlParams.get('id')
+    //
+    // window.onload = function getName() {
+    //
+    //     let getUrl = '/solutions/bank/getname?id='+ customerId;
+    //     fetch(getUrl,
+    //         {
+    //             method: 'GET',
+    //         })
+    //         .then(res=>res.json())
+    //         .then(function (res) {
+    //             document.getElementById("header").innerHTML =
+    //                 'Hello ' + res.answer;
+    //         });
+    // }
 
-    window.onload = function getName() {
+    function showBalancefield() {
+        let getUrl = '/solutions/bank/allcustomers';
+            fetch(getUrl,
+                {
+                    method: 'GET',
+                })
+                .then(res=>res.json())
+                .then(function (res) {
+                    let infoElement = document.getElementById("info")
+                    infoElement.innerHTML = "";
+                    let selectElement = document.createElement("select");
+                    selectElement.setAttribute("id", "customerList");
+                //    selectElement.innerHTML = "onchange=\"selectMenuOnchange(this.id)\"";
+                    infoElement.appendChild(selectElement);
+                    let optionAll = document.createElement("option");
+                    optionAll.value = "All";
+                    optionAll.text = "All";
+                    selectElement.appendChild(optionAll);
+                    for (let element of res) {
+                        let optionAll = document.createElement("option");
+                        optionAll.value = element.id;
+                        optionAll.text = element.userName;
+                        selectElement.appendChild(optionAll)
+                    }
+                    let requestButton = document.createElement("button");
+                    requestButton.setAttribute("id", "requestButton");
+                    requestButton.innerHTML = "Show information";
+                    infoElement.appendChild(requestButton);
+                });
+        let accountOverview = document.getElementById("requestButton");
+        accountOverview.addEventListener("click", getAccounts);
+        }
+    let accountOverview = document.getElementById("overview");
+    accountOverview.addEventListener("click", showBalancefield);
 
-        let getUrl = '/solutions/bank/getname?id='+ customerId;
-        fetch(getUrl,
-            {
-                method: 'GET',
-            })
-            .then(res=>res.json())
-            .then(function (res) {
-                document.getElementById("header").innerHTML =
-                    'Hello ' + res.answer;
-            });
-    }
+    // function selectMenuOnchange(selectMenuId) {
+    //     let selectmenuID = document.getElementById(selectMenuId);
+    //     let optionValue = selectmenuID.options[selectmenuID.selectedIndex].value;
+    // }
 
     function getAccounts () {
-        let getURl = '/solutions/bank/customeraccounts?id=' + customerId;
+        let selectMenuID = document.getElementById("select");
+        let optionValue = selectMenuID.options[selectMenuID.selectedIndex].value;
+        if (optionValue == "All") {
+            let getUrl = '/solutions/bank/allcustomers'
+        } else {
+            let getUrl = '/solutions/bank/allcustomers'
+        }
+
         fetch(getUrl,
             {
                 method: 'GET',
             })
             .then(res=>res.json())
             .then(function (res) {
-                document.getElementById("header").innerHTML =
-                    'Hello ' + res.answer;
+                let infoElement = document.getElementById("info")
+                infoElement.innerHTML = "";
+                let tableElement = document.createElement("table");
+                tableElement.setAttribute("id", "table");
+                infoElement.appendChild(tableElement);
+                let newRowElement = document.createElement("tr");
+                newRowElement.setAttribute("id", "top_row");
+                tableElement.appendChild(newRowElement);
+                let newCellElement = document.createElement("td");
+                newCellElement.innerText = "Account Number";
+                newRowElement.appendChild(newCellElement)
+                newCellElement = document.createElement("td");
+                newCellElement.innerText = "Account Balance";
+                newRowElement.appendChild(newCellElement)
+                for (let element of res) {
+                    let newRowElement = document.createElement("tr");
+                    tableElement.appendChild(newRowElement);
+                    let newCellElement = document.createElement("td");
+                    newCellElement.innerHTML = '<button id = "'+element.accountNumber+'">' + element.accountNumber + '</button>';
+                    newRowElement.appendChild(newCellElement)
+                    newCellElement = document.createElement("td");
+                    newCellElement.innerText = element.accountBalance;
+                    newRowElement.appendChild(newCellElement)
+                }
             });
     }
+    let balanceButton = document.getElementById("overview");
+    balanceButton.addEventListener("click", getAccounts);
+
+    function createAccount () {
+        let postUrl = '/solutions/bank/createaccount?id='+ customerId;
+        fetch(postUrl,
+            {
+                method: 'POST',
+            })
+            .then(res=>res.json())
+            .then(function (res) {
+                let infoElement = document.getElementById("info")
+                infoElement.innerHTML = "";
+                let divElement = document.createElement("div");
+                infoElement.appendChild(divElement);
+                divElement.setAttribute("id", "accountinfo");
+                divElement.innerHTML = '<b>' + res.answer + '</b>'
+            })
+    }
+
+    let createAcc = document.getElementById("createaccount");
+    createAcc.addEventListener("click", createAccount);
+
+    function transferMoney () {
+        let infoElement = document.getElementById("info")
+        infoElement.innerHTML = "";
+        let divElement = document.createElement("div");
+        divElement.setAttribute("Id", "depositmoney")
+        infoElement.appendChild(divElement);
+        let dropElement = document.createElement("select")
+        divElement.appendChild(dropElement);
+        let textElement = document.createElement("INPUT")
+        textElement.setAttribute("type", "text")
+        divElement.append(textElement);
+    }
+    let depositMoney = document.getElementById("depositmoney");
+    depositMoney.addEventListener("click", transferMoney);
+
+
+    function createCustomerField () {
+        let infoElement = document.getElementById("info")
+        infoElement.innerHTML = "";
+        infoElement.innerHTML = '<div id="box" class="create-box">\n' +
+            '      <h1>Creat account</h1>\n' +
+            '      <form id = "form">\n' +
+            '          <input type="text" id="name" name="name" placeholder="Name">\n' +
+            '           <input type="text" id="username" name="username" placeholder="Username">\n' +
+            '          <input type="text" id="social_number" name="social_number" placeholder="Social Number">\n' +
+            '          <input type="password" id="password" name="password" placeholder="Password">\n' +
+            '          <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">\n' +
+            '          <input type="button" id="create" value="create">\n' +
+            '      </form>\n' +
+            '  </div>'
+
+        let createCustomerButton = document.getElementById("create");
+        createCustomerButton.addEventListener("click", createCustomer);
+    }
+    let createCu = document.getElementById("createcustomer");
+    createCu.addEventListener("click", createCustomerField);
 
 
 
+    function createCustomer () {
+
+        let name = document.getElementById("name");
+        let socialNumbers = document.getElementById("social_number");
+        let userName = document.getElementById("username");
+        let password = document.getElementById("password");
+        let confirmPassword = document.getElementById("confirm_password");
+
+        if (name.value.length === 0 ) {
+            return alert ("All fields have to be filled !!!")
+        }
+        if (socialNumbers.value.length !== 11 ) {
+            return alert ("Social number have to be 11 character long")
+        }
+        if (isNaN(socialNumbers.value)) {
+            return alert ("Social number should be numeric")
+        }
+        if (password.value !== confirmPassword.value) {
+            return alert("Password have to same");
+        }
+        let customer = {
+            customerName: name.value,
+            userName: userName.value,
+            socialNumber: socialNumbers.value,
+            password: password.value
+        }
+
+        let postUrl = '/solutions/bank/createcustomer';
+        fetch(postUrl,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(customer)
+            })
+            .then(res=>res.json())
+            .then(function (res) {
+                document.getElementById("info").innerHTML = "";
+                document.getElementById("info").innerHTML = res.answer;
+            });
+    }
 
 </script>
 </body>

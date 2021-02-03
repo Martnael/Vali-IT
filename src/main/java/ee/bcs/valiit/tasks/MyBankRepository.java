@@ -17,9 +17,10 @@ public class MyBankRepository {
     private NamedParameterJdbcTemplate template;
 
     public void createCustomer(MyBankCustomer myBankCustomer) {
-        String sql = "INSERT INTO customer (name, social_number, password) " + "VALUES (:name,:social_number, :password)";
+        String sql = "INSERT INTO customer (name, social_number, user_name, password) " + "VALUES (:name, :social_number, :user_name, :password)";
         Map<String, Object> paraMap = new HashMap<>();
         paraMap.put("name", myBankCustomer.getCustomerName());
+        paraMap.put("user_name", myBankCustomer.getUserName());
         paraMap.put("social_number", myBankCustomer.getSocialNumber());
         paraMap.put("password", myBankCustomer.getPassword());
         template.update(sql, paraMap);

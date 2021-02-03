@@ -7,6 +7,7 @@ public class MyBankCustomer {
     private String customerName;
     private String socialNumber;
     private String password;
+    private String userName;
 
     public int getId() {
         return Id;
@@ -38,5 +39,13 @@ public class MyBankCustomer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

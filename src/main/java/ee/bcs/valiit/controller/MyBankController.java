@@ -15,14 +15,9 @@ public class MyBankController {
     @Autowired
     private MyBankServices myBankServices;
 
-//    @GetMapping("/menu")
-//    public String menu() {
-//        return MyBankServices.menu();
-//    }
-
-    @PostMapping("createaccount")
-    public MyBankResponse createAccount(@RequestBody MyBankCustomer myBankCustomer) {
-        return myBankServices.createAccount(myBankCustomer);
+    @PostMapping("createcustomer")
+    public MyBankResponse createCustomer(@RequestBody MyBankCustomer myBankCustomer) {
+        return myBankServices.createCustomer(myBankCustomer);
     }
 
     @PostMapping("login")
@@ -39,6 +34,22 @@ public class MyBankController {
     public String getBalance(@RequestParam("accountnr") String accountNr) {
         return myBankServices.getBalance(accountNr);
     }
+
+    @PostMapping ("createaccount")
+    public MyBankResponse createAccount(@RequestParam("id") int customerId) {
+        return myBankServices.createAccount(customerId);
+    }
+
+    @GetMapping ("allcustomers")
+    public List<MyBankCustomer> allCustomers() {
+        return myBankServices.allCustomers();
+    }
+
+
+
+
+
+
 
     @PutMapping("depositmoney")
     public void depositMoney(@RequestBody MyBankTransaction myBankTransaction) {

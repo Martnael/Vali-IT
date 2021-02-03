@@ -1,11 +1,21 @@
 body{
     margin: 0;
     padding: 0;
-    background:#156DA9;
+    background: #cac6cd;
     justify-content: center;
     align-items: center;
     display: flex;
     height: 100vh;
+}
+
+#table button {
+    border: none;
+    background-color: inherit;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    color: black
 }
 
 #logo{
@@ -14,18 +24,24 @@ body{
     text-shadow: 2px 2px 4px #000000;
 }
 
+#selectbalance {
+    position: absolute;
+    left: 20%;
+    top: 10%;
+}
+
 ul{
     text-align: center;
 }
 
 .sidenav {
     height: 100%;
-    width: 15%;
+    width: 20%;
     position: fixed;
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #535353;
+    background-color: #b0adb4;
     overflow-x: hidden;
     padding-top: 20px;
     border-radius: 5px;
@@ -54,7 +70,7 @@ ul{
     width: 100%;
     padding: 30px;
     text-align: center;
-    background: #535353;
+    background: #b0adb4;
     color: white;
     font-size: 20px;
 }
@@ -86,7 +102,7 @@ table {
     width: 100%;
 }
 #top_row {
-    background-color: darkgray;
+    background-color: #4CAF50;
     font-weight: bold;
 }
 tr, td {
@@ -95,4 +111,64 @@ tr, td {
     border-bottom: 1px solid #ddd;
 }
 
+.create-box{
+    width: 500px;
+    height: 500px;
+    background: #ffffff;
+    padding: 60px 30px;
+    border-radius: 5px;
+    text-align: center;
+    -webkit-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);
 
+}
+
+.create-box h1{
+    text-transform: uppercase;
+    font-weight: 500;
+    color: Black;
+}
+
+.create-box input[type="text"],
+.create-box input[type="password"]{
+    width: 60%;
+    margin-bottom: 20px;
+}
+
+.create-box input[type="text"],
+.create-box input[type="password"]{
+    border-radius: 30px;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid #00BCD4;
+    font-size: 13px;
+    height: 40px;
+    text-align: center;
+    transition: 0.27s;
+}
+.create-box input[type="text"]:focus,
+.create-box input[type="password"]:focus{
+    width: 80%;
+    border-color:#6fd653;
+}
+
+.create-box input[type="button"]{
+    width: 40%;
+    border: none;
+    outline: none;
+    background: #156DA9;
+    padding: 10px 0;
+    border-radius: 30px;
+    color: #ffffff;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.create-box input[type="button"]:hover{
+    background:#6FD653;
+    transition: .2s;
+}

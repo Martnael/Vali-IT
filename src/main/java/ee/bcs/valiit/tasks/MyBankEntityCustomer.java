@@ -12,7 +12,7 @@ public class MyBankEntityCustomer {
     private int userId;
 
     private String name;
-
+    private String userName;
     private String socialNumber;
     private String password;
 
@@ -57,5 +57,13 @@ public class MyBankEntityCustomer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

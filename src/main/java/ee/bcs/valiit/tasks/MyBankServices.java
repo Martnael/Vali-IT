@@ -1,6 +1,8 @@
 package ee.bcs.valiit.tasks;
 
+import liquibase.pro.packaged.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,23 +31,30 @@ public class MyBankServices {
 
     }
 
-    public MyBankResponse createAccount(MyBankCustomer myBankCustomer) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public MyBankResponse createCustomer(MyBankCustomer myBankCustomer) {
         int validation = myBankRepository.validateCustomer(myBankCustomer.getSocialNumber());
-        String accountNr = buildAccountNumber();
         MyBankResponse response = new MyBankResponse();
         if (validation == 0) {
+            myBankCustomer.setPassword(passwordEncoder.encode(myBankCustomer.getPassword()));
             myBankRepository.createCustomer(myBankCustomer);
-            int customerID = myBankRepository.getCustomerID(myBankCustomer.getSocialNumber());
-//            myBankRepository.createAccount(accountNr, customerID);
-            response.setAnswer("Account created. Please return to back and log in" + "<a href=\"index.html\">Back</a>");
+            response.setAnswer("Customer created");
             return response;
         } else {
-            response.setAnswer("Client have already account. Please return to back and log in" + "<a href=\"index.html\">Back</a>");
+            response.setAnswer("Customer have already account!");
             return response;
-//            int customerID = myBankRepository.getCustomerID(myBankCustomer.getSocialNumber());
-//            myBankRepository.createAccount(accountNr, customerID);
-//            System.out.println("Account created ");
         }
+    }
+
+    public MyBankResponse createAccount(int customerId) {
+        String accountNr = buildAccountNumber();
+        MyBankResponse response = new MyBankResponse();
+        myBankRepository.createAccount(accountNr, customerId);
+        response.setAnswer("Account number: " + accountNr + " is created");
+        response.setCustomerId(customerId);
+        return response;
     }
 
     public String getBalance(String accountNr) {
@@ -318,6 +327,18 @@ public class MyBankServices {
             answer.setAnswer("Something went wrong");
         }
         return answer;
+    }
+
+    public List<MyBankCustomer> allCustomers() {
+        List<MyBankEntityCustomer> customersFromEntity = hibernateCustomerResporitory.findAll();;
+        List<MyBankCustomer> customers = new ArrayList<>();
+        for (MyBankEntityCustomer myBankEntityCustomer : customersFromEntity) {
+            MyBankCustomer customer = new MyBankCustomer();
+            customer.setUserName(myBankEntityCustomer.getUserName());
+            customer.setId(myBankEntityCustomer.getUserId());
+            customers.add(customer);
+        }
+        return customers;
     }
 }
 

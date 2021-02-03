@@ -78,4 +78,16 @@
             <column name="password" type="text"/>
         </addColumn>
     </changeSet>
-</databaseChangeLog>
+    <changeSet id="2021-02-02 bank v.3" author="Mart Nael">
+        <addColumn tableName="customer">
+            <column name="username" type="text"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="2021-02-02 bank v.3.1" author="Mart Nael">
+        <addUniqueConstraint tableName="customer" columnNames="username"/>
+    </changeSet>
+    <changeSet id="2021-02-02 bank v.3.2" author="Mart Nael">
+        <renameColumn newColumnName="user_name" oldColumnName="username" tableName="customer" />
+    </changeSet>
+
+    </databaseChangeLog>
