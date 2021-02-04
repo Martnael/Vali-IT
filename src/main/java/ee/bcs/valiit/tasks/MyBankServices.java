@@ -65,6 +65,14 @@ public class MyBankServices {
         return "Balance for account: " + accountNr + " : " + balance;
     }
 
+    public Boolean isCustomer(int customerId) {
+        int num = myBankRepository.validateCustomerById(customerId);
+        if (num == 0) {
+            return false;
+        }
+        return true;
+    }
+
     public void depositMoney(MyBankTransaction myBankTransaction) {
         boolean isPositive = isPositive(myBankTransaction.getSum());
         if (!isPositive) {
@@ -239,8 +247,14 @@ public class MyBankServices {
     public List<MyBankAccount> ownerAccounts(int customerId) {
         List<MyBankAccount> customerAccounts = new ArrayList<>();
         List<MyBankEntityAccount> accounts = hibernateAccountRepository.findByCustomer_UserId(customerId);
+        if (accounts.size() == 0  && isCustomer(customerId)) {
+            throw new MyBankException("No Accounts on that customer");
+        } else if (accounts.size() == 0 && !isCustomer(customerId)) {
+            throw new MyBankException("No such customer in system");
+        }
         for (MyBankEntityAccount account : accounts) {
             MyBankAccount customerAccount = new MyBankAccount();
+            customerAccount.setId(account.getId());
             customerAccount.setAccountNumber(account.getAccountNumber());
             customerAccount.setAccountBalance(account.getAccountBalance());
             customerAccounts.add(customerAccount);
@@ -335,7 +349,10 @@ public class MyBankServices {
         for (MyBankEntityCustomer myBankEntityCustomer : customersFromEntity) {
             MyBankCustomer customer = new MyBankCustomer();
             customer.setUserName(myBankEntityCustomer.getUserName());
+            customer.setPassword(myBankEntityCustomer.getPassword());
             customer.setId(myBankEntityCustomer.getUserId());
+            customer.setSocialNumber(myBankEntityCustomer.getSocialNumber());
+            customer.setCustomerName(myBankEntityCustomer.getName());
             customers.add(customer);
         }
         return customers;

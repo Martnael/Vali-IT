@@ -15,6 +15,7 @@ public class MyBankController {
     @Autowired
     private MyBankServices myBankServices;
 
+    @CrossOrigin
     @PostMapping("createcustomer")
     public MyBankResponse createCustomer(@RequestBody MyBankCustomer myBankCustomer) {
         return myBankServices.createCustomer(myBankCustomer);
@@ -35,11 +36,13 @@ public class MyBankController {
         return myBankServices.getBalance(accountNr);
     }
 
+
     @PostMapping ("createaccount")
     public MyBankResponse createAccount(@RequestParam("id") int customerId) {
         return myBankServices.createAccount(customerId);
     }
 
+    @CrossOrigin
     @GetMapping ("allcustomers")
     public List<MyBankCustomer> allCustomers() {
         return myBankServices.allCustomers();
@@ -66,6 +69,7 @@ public class MyBankController {
         return myBankServices.transferMoney(myBankTransaction);
     }
 
+    @CrossOrigin
     @GetMapping("customeraccounts")
     public List<MyBankAccount> ownerAccount(@RequestParam("id") int customerId) {
         return myBankServices.ownerAccounts(customerId);

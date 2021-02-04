@@ -56,6 +56,13 @@ public class MyBankRepository {
         return template.queryForObject(sql, paraMap, Integer.class);
     }
 
+    public int validateCustomerById (int customerId){
+        String sql = "SELECT COUNT(*) FROM customer WHERE user_id = :user_id";
+        Map<String, Object> paraMap = new HashMap<>();
+        paraMap.put("user_id", customerId);
+        return template.queryForObject(sql, paraMap, Integer.class);
+    }
+
     public int getAccountID (String accountNr) {
         String sql = "SELECT account_id FROM account WHERE account_nr = :account_nr";
         Map<String, String> paraMap = new HashMap<>();
