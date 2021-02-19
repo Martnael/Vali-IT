@@ -19,8 +19,8 @@ public class Lesson3HardController {
     }
 
     Random random = new Random();
-    public int i = random.nextInt(100);
-    public int count = 10;
+    int i = random.nextInt(100);
+    int count = 10;
 
     @GetMapping ("random")
     public String random (@RequestParam("x") int x) {

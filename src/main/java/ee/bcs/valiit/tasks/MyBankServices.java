@@ -35,24 +35,38 @@ public class MyBankServices {
     private PasswordEncoder passwordEncoder;
 
     public MyBankResponse createCustomer(MyBankCustomer myBankCustomer) {
-        int validation = myBankRepository.validateCustomer(myBankCustomer.getSocialNumber());
         MyBankResponse response = new MyBankResponse();
-        if (validation == 0) {
-            myBankCustomer.setPassword(passwordEncoder.encode(myBankCustomer.getPassword()));
-            myBankRepository.createCustomer(myBankCustomer);
-            response.setAnswer("Customer created");
-            return response;
-        } else {
+        if (myBankCustomer.getSocialNumber().length() != 11) {
+           response.setAnswer("Social number have to be 11 char long.");
+           return response;
+        }
+        int validation = myBankRepository.validateCustomer(myBankCustomer.getSocialNumber());
+        if (validation > 0) {
             response.setAnswer("Customer have already account!");
             return response;
         }
+        int userNameValidation = myBankRepository.validateUserName(myBankCustomer.getUserName());
+        if (userNameValidation > 0) {
+            response.setAnswer("Username taken");
+            return response;
+        }
+        myBankCustomer.setPassword(passwordEncoder.encode(myBankCustomer.getPassword()));
+        myBankRepository.createCustomer(myBankCustomer);
+        response.setAnswer("Customer created");
+        return response;
+
     }
 
     public MyBankResponse createAccount(int customerId) {
-        String accountNr = buildAccountNumber();
+        boolean isAccount = isCustomer(customerId);
         MyBankResponse response = new MyBankResponse();
+        if (!isAccount) {
+            response.setAnswer("No such customer in system");
+            return response;
+        }
+        String accountNr = buildAccountNumber();
         myBankRepository.createAccount(accountNr, customerId);
-        response.setAnswer("Account number: " + accountNr + " is created");
+        response.setAnswer("Account number: " + accountNr + " is created for customer " + customerId);
         response.setCustomerId(customerId);
         return response;
     }
@@ -73,7 +87,15 @@ public class MyBankServices {
         return true;
     }
 
-    public void depositMoney(MyBankTransaction myBankTransaction) {
+    public Boolean isCustomerName(String customerName) {
+        int num = myBankRepository.validateUserName(customerName);
+        if (num == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public MyBankResponse depositMoney(MyBankTransaction myBankTransaction) {
         boolean isPositive = isPositive(myBankTransaction.getSum());
         if (!isPositive) {
             throw new MyBankException(haveToPositive);
@@ -82,15 +104,17 @@ public class MyBankServices {
         if (accountValidation ==  0) {
             throw new MyBankException(noSuchAccount);
         }
+        MyBankResponse response = new MyBankResponse();
         myBankTransaction.setType(1);
         BigDecimal balance = myBankRepository.getBalance(myBankTransaction.getAccountTo());
         BigDecimal newBalance = balance.add(myBankTransaction.getSum());
         myBankRepository.updateBalance(myBankTransaction.getAccountTo(), newBalance);
         myBankRepository.saveTransaction(myBankTransaction);
-        System.out.println("Transaction complete");
+        response.setAnswer("Transfer complete");
+        return response;
     }
 
-    public String withdrawMoney(MyBankTransaction myBankTransaction) {
+    public MyBankResponse withdrawMoney(MyBankTransaction myBankTransaction) {
         boolean isSumPositive = isPositive(myBankTransaction.getSum());
         if(!isSumPositive) {
             throw new MyBankException(haveToPositive);
@@ -104,11 +128,13 @@ public class MyBankServices {
             throw new MyBankException(notEnoughMoney);
         }
         myBankTransaction.setType(2);
+        MyBankResponse response = new MyBankResponse();
         BigDecimal balance = myBankRepository.getBalance(myBankTransaction.getAccountFrom());
         BigDecimal newBalance = balance.subtract(myBankTransaction.getSum());
         myBankRepository.updateBalance(myBankTransaction.getAccountFrom(), newBalance);
         myBankRepository.saveTransaction(myBankTransaction);
-        return "Transaction completed";
+        response.setAnswer("Transfer complete");
+        return response;
     }
 
     public String buildAccountNumber() {
@@ -132,7 +158,7 @@ public class MyBankServices {
     }
 
     @Transactional
-    public String transferMoney(MyBankTransaction myBankTransaction) {
+    public MyBankResponse transferMoney(MyBankTransaction myBankTransaction) {
         boolean isSumPositive = isPositive(myBankTransaction.getSum());
         if (!isSumPositive ) {
             throw new MyBankException(haveToPositive);
@@ -147,6 +173,7 @@ public class MyBankServices {
             throw new MyBankException(notEnoughMoney);
         }
         myBankTransaction.setType(3);
+        MyBankResponse response = new MyBankResponse();
         BigDecimal balanceFrom = myBankRepository.getBalance(myBankTransaction.getAccountFrom());
         BigDecimal newBalanceFrom = balanceFrom.subtract(myBankTransaction.getSum());
         BigDecimal balanceTo = myBankRepository.getBalance(myBankTransaction.getAccountTo());
@@ -154,54 +181,19 @@ public class MyBankServices {
         myBankRepository.updateBalance(myBankTransaction.getAccountFrom(), newBalanceFrom);
         myBankRepository.updateBalance(myBankTransaction.getAccountTo(), newBalanceTo);
         myBankRepository.saveTransaction(myBankTransaction);
-        return " Transaction compete";
+        response.setAnswer("Transaction completed");
+        return response;
     }
 
 
-    public String printAccounts() {
+    public List<MyBankAccount> allAccounts() {
         List<MyBankAccount> allAccounts = myBankRepository.allAccount();
-        StringBuilder sb = new StringBuilder();
-        sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
-                "<tr>" +
-                "<td><b>Account Owner</b></td>" +
-                "<td><b>Account Number</b></td>" +
-                "<td><b>Balance</b></td>" +
-                "</tr>");
-        for (MyBankAccount account : allAccounts) {
-            String row = "<tr>" +
-                    "<td>" + account.getOwner() + "</td>" +
-                    "<td>" + account.getAccountNumber() + "</td>" +
-                    "<td>" + account.getAccountBalance() + "</td>" +
-                    "</tr>";
-            sb.append(row);
-        }
-        return sb.toString();
+        return allAccounts;
     }
 
-    public String printAllTransfers() {
+    public List<MyBankTransaction> allTransactions() {
         List<MyBankTransaction> allTransactions = myBankRepository.allTransactions();
-        StringBuilder sb = new StringBuilder();
-        sb.append("<table border=1 cellspacing=1 cellpadding=2 style='font-family:Arial;font-size:12'>" +
-                "<tr>" +
-                "<td><b>Transacation ID</b></td>" +
-                "<td><b>Date</b></td>" +
-                "<td><b>Account From</b></td>" +
-                "<td><b>Account To</b></td>" +
-                "<td><b>Type</b></td>" +
-                "<td><b>Sum</b></td>" +
-                "</tr>");
-        for (MyBankTransaction transaction : allTransactions) {
-            String row = "<tr>" +
-                    "<td>" + transaction.getTransactionID() + "</td>" +
-                    "<td>" + transaction.getDatetime() + "</td>" +
-                    "<td>" + replaceBankAccount(transaction.getAccountFrom()) + "</td>" +
-                    "<td>" + replaceBankAccount(transaction.getAccountTo()) + "</td>" +
-                    "<td>" + transaction.getType() + "</td>" +
-                    "<td>" + transaction.getSum() + "</td>" +
-                    "</tr>";
-            sb.append(row);
-        }
-        return sb.toString();
+        return allTransactions;
     }
 
     /**
@@ -274,6 +266,10 @@ public class MyBankServices {
         mappedTransaction.setSum(transaction.getSum());
         mappedTransaction.setDatetime(transaction.getDateTime());
         return mappedTransaction;
+    }
+
+    public List<MyBankTransaction> transactionsByAccount (String accountNr) {
+        return myBankRepository.transactionsByAccountNr(accountNr);
     }
 
 
@@ -357,6 +353,7 @@ public class MyBankServices {
         }
         return customers;
     }
+
 }
 
 

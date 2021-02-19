@@ -36,7 +36,7 @@ public class MyBankController {
         return myBankServices.getBalance(accountNr);
     }
 
-
+    @CrossOrigin
     @PostMapping ("createaccount")
     public MyBankResponse createAccount(@RequestParam("id") int customerId) {
         return myBankServices.createAccount(customerId);
@@ -48,24 +48,21 @@ public class MyBankController {
         return myBankServices.allCustomers();
     }
 
-
-
-
-
-
-
+    @CrossOrigin
     @PutMapping("depositmoney")
-    public void depositMoney(@RequestBody MyBankTransaction myBankTransaction) {
-        myBankServices.depositMoney(myBankTransaction);
+    public MyBankResponse depositMoney(@RequestBody MyBankTransaction myBankTransaction) {
+        return myBankServices.depositMoney(myBankTransaction);
     }
 
+    @CrossOrigin
     @PutMapping("withdrawmoney")
-    public String withdrawMoney(@RequestBody MyBankTransaction myBankTransaction) {
+    public MyBankResponse withdrawMoney(@RequestBody MyBankTransaction myBankTransaction) {
         return myBankServices.withdrawMoney(myBankTransaction);
     }
 
+    @CrossOrigin
     @PostMapping("transfermoney")
-    public String transferMoney(@RequestBody MyBankTransaction myBankTransaction) {
+    public MyBankResponse transferMoney(@RequestBody MyBankTransaction myBankTransaction) {
         return myBankServices.transferMoney(myBankTransaction);
     }
 
@@ -75,9 +72,10 @@ public class MyBankController {
         return myBankServices.ownerAccounts(customerId);
     }
 
+    @CrossOrigin
     @GetMapping("/allaccounts")
-    public String allAccount() {
-        return myBankServices.printAccounts();
+    public List<MyBankAccount> allAccount() {
+        return myBankServices.allAccounts();
     }
 
     @GetMapping("/lastaccount")
@@ -85,9 +83,16 @@ public class MyBankController {
         return myBankServices.buildAccountNumber();
     }
 
+    @CrossOrigin
     @GetMapping("/alltransactions")
-    public String allTransactions () {
-        return myBankServices.printAllTransfers();
+    public List<MyBankTransaction> allTransactions () {
+        return myBankServices.allTransactions();
+    }
+
+    @CrossOrigin
+    @GetMapping("/transactionsbyaccount")
+    public List<MyBankTransaction> transactionsByAccounts (@RequestParam("accountnr") String accountNr) {
+        return myBankServices.transactionsByAccount(accountNr);
     }
 
     @GetMapping("/oneaccount")
