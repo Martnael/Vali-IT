@@ -6,7 +6,7 @@ import java.util.*;
 
 public class CodeWars {
     public static void main(String[] args) {
-         System.out.println(buddy( 298, 5506));
+        System.out.println(buddy(298, 5506));
         // System.out.println(findUniq(new double[]{ 1, 1, 1, 2, 1, 1 }));
         // System.out.println(decode("Romani ite domumasasas"));
         // System.out.println(toBinary(11));
@@ -50,7 +50,7 @@ public class CodeWars {
 
     public static String encode(String s) {
         // Your code here!
-        return "";
+        return s;
     }
 
     public static String decode(String s) {
@@ -96,15 +96,13 @@ public class CodeWars {
      * @return
      */
 
-    public static BigInteger Get(long power) {
+    public static BigInteger getPadovan(long power) {
         BigInteger[] series = new BigInteger[(int) power];
         series[0] = BigInteger.ONE;
         series[1] = BigInteger.ONE;
         series[2] = BigInteger.ONE;
         series[3] = BigInteger.TWO;
         series[4] = BigInteger.TWO;
-
-
 
         for (int i = 5; i < power; i++) {
             series[i] = series[i - 2].add(series[i - 3]);
@@ -135,14 +133,11 @@ public class CodeWars {
         HashMap<Double, Integer> elementCount = new HashMap<Double, Integer>();
         Arrays.sort(arr);
 
-        double temp = 0;
-
         for (int i = 0; i < 0; i++) {
             if (arr[i] == arr[i + 1]) {
 
             }
         }
-
 
         /// a loop to count how many of each elements is represented in the list elements and limit it with maxOccurrences
         Arrays.sort(arr);

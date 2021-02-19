@@ -9,11 +9,19 @@ public class MyBankTransactionRowMapper implements RowMapper<MyBankTransaction>{
     @Override
     public MyBankTransaction mapRow(ResultSet resultSet, int i) throws SQLException {
         MyBankTransaction transaction = new MyBankTransaction();
-        transaction.setAccountFrom(resultSet.getString("account_nr_from"));
-        transaction.setAccountTo(resultSet.getString("account_nr_to"));
+        if (resultSet.getString("account_nr_from").equals("EE1")) {
+            transaction.setAccountFrom("");
+        } else {
+            transaction.setAccountFrom(resultSet.getString("account_nr_from"));
+        }
+        if (resultSet.getString("account_nr_to").equals("EE1")) {
+            transaction.setAccountTo("");
+        } else {
+            transaction.setAccountTo(resultSet.getString("account_nr_to"));
+        }
         transaction.setDatetime(resultSet.getString("date_time"));
         transaction.setSum(resultSet.getBigDecimal("sum"));
-        transaction.setType(resultSet.getInt("type"));
+        transaction.setTypeName(resultSet.getString("type_name"));
         transaction.setTransactionID(resultSet.getInt("transfer_id"));
         return transaction;
     }

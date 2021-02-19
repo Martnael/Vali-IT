@@ -63,6 +63,13 @@ public class MyBankRepository {
         return template.queryForObject(sql, paraMap, Integer.class);
     }
 
+    public int validateUserName (String userName){
+        String sql = "SELECT COUNT(*) FROM customer WHERE user_name = :user_name";
+        Map<String, String> paraMap = new HashMap<>();
+        paraMap.put("user_name", userName);
+        return template.queryForObject(sql, paraMap, Integer.class);
+    }
+
     public int getAccountID (String accountNr) {
         String sql = "SELECT account_id FROM account WHERE account_nr = :account_nr";
         Map<String, String> paraMap = new HashMap<>();
@@ -110,13 +117,44 @@ public class MyBankRepository {
     }
 
     public List<MyBankAccount> allAccount() {
-        String sql ="SELECT account.account_nr, account.balance, customer.name FROM account JOIN customer on account.owner_id = customer.user_id";
+        String sql ="SELECT account.account_id, account.account_nr, account.balance, customer.name FROM account JOIN customer on account.owner_id = customer.user_id ORDER BY account_id";
         return template.query(sql, new HashMap<>(), new MyBankAccountRowMapper());
     }
 
+
     public List<MyBankTransaction> allTransactions () {
-        String  sql = "SELECT t.transfer_id, t.sum, t.date_time, t.type, a1.account_nr AS account_nr_to, a2.account_nr AS account_nr_from FROM transaction t INNER JOIN account a1 ON t.account_to = a1.account_id INNER JOIN account a2 ON t.account_from = a2.account_id";
+        String  sql = "SELECT t.transfer_id,\n" +
+                "       t.sum,\n" +
+                "       t.date_time,\n" +
+                "       t2.type_name,\n" +
+                "       a1.account_nr AS account_nr_to,\n" +
+                "       a2.account_nr AS account_nr_from\n" +
+                "FROM transaction t\n" +
+                "    INNER JOIN account a1 ON t.account_to = a1.account_id\n" +
+                "    INNER JOIN account a2 ON t.account_from = a2.account_id\n" +
+                "    INNER JOIN type t2 on t.type = t2.type_id\n" +
+                "ORDER BY transfer_id";
         return template.query(sql, new HashMap<>(), new MyBankTransactionRowMapper());
     }
+
+     public List<MyBankTransaction> transactionsByAccountNr (String accountNr) {
+        String sql = "SELECT t.transfer_id,\n" +
+                "       t.sum,\n" +
+                "       t.date_time,\n" +
+                "       t2.type_name,\n" +
+                "       a1.account_nr AS account_nr_to,\n" +
+                "       a2.account_nr AS account_nr_from\n" +
+                "FROM transaction t\n" +
+                "    INNER JOIN account a1 ON t.account_to = a1.account_id\n" +
+                "    INNER JOIN account a2 ON t.account_from = a2.account_id\n" +
+                "    INNER JOIN type t2 on t.type = t2.type_id\n" +
+                "WHERE a1.account_nr = :account_nr_from OR a2.account_nr = :account_nr_to\n" +
+                "ORDER BY transfer_id";
+         Map<String, String> paramMap = new HashMap();
+         paramMap.put("account_nr_to", accountNr);
+         paramMap.put("account_nr_from", accountNr);
+        return template.query(sql, paramMap, new MyBankTransactionRowMapper());
+     }
+
 
 }

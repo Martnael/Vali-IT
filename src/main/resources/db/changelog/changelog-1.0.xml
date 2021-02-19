@@ -70,7 +70,10 @@
     <modifyDataType tableName="transaction" columnName="type" newDataType="int"/>
     </changeSet>
     <changeSet id="2021-01-27 bank v.2.2" author="Mart Nael">
-        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="type" constraintName="trasnaction_to_type" referencedTableName="type"
+        <addForeignKeyConstraint baseTableName="transaction"
+                                 baseColumnNames="type"
+                                    constraintName="trasnaction_to_type"
+                                 referencedTableName="type"
                                  referencedColumnNames="type_id"/>
     </changeSet>
     <changeSet id="2021-01-30 bank v.2.3" author="Mart Nael">
